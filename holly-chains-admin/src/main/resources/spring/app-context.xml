@@ -29,7 +29,9 @@
 		<property name="suffix" value=".jsp" />
 		<property name="order" value="2" />
 	</bean>
-
+	
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
+	
 	<!-- -->
 	<mvc:interceptors>
 		<bean class="com.joinway.web.audit.FlowInterceptor"/>

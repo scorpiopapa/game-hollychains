@@ -44,29 +44,6 @@ public class AdminController extends ExceptionController {
 	
 	@Autowired AdminService service;
 	
-//	@RequestMapping(value={"index"})
-//	@ResponseBody
-//	@InputLog
-//	public ModelAndView index() throws Exception {
-//		return new ModelAndView("index");
-//	}
-
-	@RequestMapping(value="register", method=RequestMethod.POST)
-	@ResponseBody
-	@Login
-	@Audit
-	@InputLog
-	@OutputLog
-	public LoginView register(@ApiBodyObject @Valid RegisterForm form) throws Exception {
-		preLogin(form.getName());
-		
-		LoginView view = service.register(form);
-		
-		postLogin(view);
-		
-		return view;
-	}
-	
 	@RequestMapping(value="login", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Login
@@ -74,8 +51,6 @@ public class AdminController extends ExceptionController {
 	@InputLog
 	@OutputLog
 	public LoginView login(@ApiBodyObject @Valid LoginForm form) throws Exception {
-		preLogin(form.getName());
-		
 		LoginView view = service.login(form);
 		
 		postLogin(view);
@@ -83,6 +58,20 @@ public class AdminController extends ExceptionController {
 		return view;
 	}
 	
+	@RequestMapping(value="register", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Login
+	@Audit
+	@InputLog
+	@OutputLog
+	public LoginView register(@ApiBodyObject @Valid RegisterForm form) throws Exception {
+		LoginView view = service.register(form);
+		
+		postLogin(view);
+		
+		return view;
+	}
+
 	@RequestMapping(value="login/context", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@SecurityCheck
@@ -108,16 +97,16 @@ public class AdminController extends ExceptionController {
 	@InputLog
 	@OutputLog
 	public LogoutView logout(){
-		LogoutView view = service.logout();
-		
-		UserContext uc = SessionHelper.getUserContext();
-		if(uc != null){
-			view.setUserName(uc.getLoginName());
-		}
+//		LogoutView view = service.logout();
+//		
+//		UserContext uc = SessionHelper.getUserContext();
+//		if(uc != null){
+//			view.setUserName(uc.getLoginName());
+//		}
 		
 		log.info("user logged out");
 		
-		return view;
+		return new LogoutView();
 	}
 	
 	@RequestMapping(value="navigator", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -130,32 +119,14 @@ public class AdminController extends ExceptionController {
 		return service.getNavigatorMenus(SessionHelper.getUserContext().getUserId());
 	}
 	
-	void preLogin(String userName){
-		UserContext uc = SessionHelper.getUserContext(true);
-		// set login user name anyway for audit usage
-		uc.setLoginName(userName);
-	}
-
 	void postLogin(LoginView view){
-		UserContext uc = SessionHelper.getUserContext();
+		UserContext uc = SessionHelper.getUserContext(true);
 
 		uc.setLastLoginTime(view.getLastLoginTime());
 		uc.setLoginCount(view.getLoginCount());
 		uc.setUserId(view.getUserId());
-		
-//		// ..sso
-//		AppContext.set(SecurityConstants.SSO.UID_KEY, uc.getUserId());
+		uc.setLoginName(view.getloginName());
 	}
-	
-//	@RequestMapping(value="search/{table}", produces=MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
-//	@Audit("search")
-//	@InputLog
-//	@OutputLog
-//	public DataGridView find(@PathVariable("table") String table, @LogIgnore HttpServletRequest request) throws Exception {
-//		driveTraineeTableServiec.
-//		return 
-//	}
 }
 
 

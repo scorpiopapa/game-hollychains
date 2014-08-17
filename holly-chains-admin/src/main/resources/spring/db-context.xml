@@ -25,27 +25,27 @@
 	<beans profile="local">
 		<bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
 			<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		    <property name="url" value="jdbc:mysql://115.28.198.131:3306/spring?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
-		    <property name="username" value="spring" />
-		    <property name="password" value="drive123" />
+		    <property name="url" value="jdbc:mysql://speed.cqv9bfjneaic.ap-northeast-1.rds.amazonaws.com:3306/holychains?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+		    <property name="username" value="awsuser" />
+		    <property name="password" value="mypassword" />
 		</bean>
 	</beans>
 
 	<beans profile="dev">
 		<bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
 			<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		    <property name="url" value="jdbc:mysql://localhost:3306/spring?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
-		    <property name="username" value="spring" />
-		    <property name="password" value="drive123" />
+		    <property name="url" value="jdbc:mysql://speed.cqv9bfjneaic.ap-northeast-1.rds.amazonaws.com:3306/holychains?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+		    <property name="username" value="awsuser" />
+		    <property name="password" value="mypassword" />
 		</bean>
 	</beans>
 	
 	<beans profile="prod">
 		<bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
 			<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		    <property name="url" value="jdbc:mysql://115.28.198.131:3306/spring?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
-		    <property name="username" value="spring" />
-		    <property name="password" value="drive123" />
+		    <property name="url" value="jdbc:mysql://speed.cqv9bfjneaic.ap-northeast-1.rds.amazonaws.com:3306/holychains?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+		    <property name="username" value="awsuser" />
+		    <property name="password" value="mypassword" />
 		</bean>
 	</beans>
 	<!--  -->
