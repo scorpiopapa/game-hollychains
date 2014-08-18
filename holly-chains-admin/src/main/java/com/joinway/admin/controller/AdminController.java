@@ -6,13 +6,13 @@ import org.jsondoc.core.annotation.ApiBodyObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.joinway.admin.bean.UserContext;
 import com.joinway.admin.bean.form.LoginForm;
@@ -42,7 +42,7 @@ public class AdminController extends ExceptionController {
 
 	private final static Logger log = LoggerFactory.getLogger(AdminController.class);
 	
-	@Autowired AdminService service;
+	@Autowired @Qualifier("ChainsAdminService") AdminService service;
 	
 	@RequestMapping(value="login", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
