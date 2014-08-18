@@ -220,6 +220,7 @@ function getIdDescOrder(){
 	return JSON.stringify(orderBy);
 }
 
+/*
 function formatGender(val, row){
 	var value = val;
 	if(val == 'F'){
@@ -228,4 +229,30 @@ function formatGender(val, row){
 		value = '男'
 	}
 	return value;
+}
+*/
+
+function exportExcel(form){
+	var fileName;
+	
+	$.ajax({
+		url: 'export.json', 
+		type: 'POST',
+		async: false,
+		data: form,
+    	success: function(data) {
+	        if(data.code != 0){
+	        	showErrorMessage('保存失败')
+	        }else{
+	        	fileName = data.fileName;
+	        }
+    	},
+    	error: function(XMLHttpRequest, textStatus, errorThrown) {
+    		showErrorMessage('网络连接失败')
+    	}
+    });
+	
+	console.log(fileName);
+	
+	window.location.href = 'download/' + fileName + '.json'
 }
