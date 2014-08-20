@@ -1,6 +1,8 @@
-package com.joinway.admin.bean.domain;
+package com.bt.chains.bean.domain;
 
 import com.joinway.bean.domain.DomainEntity;
+import com.joinway.bean.domain.annotation.DomainField;
+import com.joinway.bean.domain.converter.IntToStringConverter;
 
 public class Weapon extends DomainEntity {
 	/**
@@ -19,6 +21,7 @@ public class Weapon extends DomainEntity {
 	/**
 	 * 武器名称
 	 */
+	@DomainField(converter=IntToStringConverter.class)
 	private String wid;
 	
 	

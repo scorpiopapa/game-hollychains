@@ -5,7 +5,7 @@
     	<param-name>spring.profiles.default</param-name>
     	<param-value>local</param-value>
     </context-param>
-    
+
     <!-- Processes application requests -->
     <servlet>
         <servlet-name>spring-admin</servlet-name>

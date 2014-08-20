@@ -86,17 +86,12 @@ function exportWeaponQuery(){
         <th data-options="field:'ck'" checkbox="true"></th>
             <th data-options="field:'wid'">序号</th>
             <th data-options="field:'weaponId'">武器ID</th>
+            <th data-options="field:'weaponName'">武器名称</th>
             <!-- 添加字段 -->
         </tr>
     </thead>
 </table>
 <div id="weapon_toolbar" style="padding:5px;height:auto">
-<!--     <div style="margin-bottom:5px">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="showAddDialog('#weapon_form', '#weapon_dlg')">添加</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="showEditDialog('#weapon_grid', '#weapon_form', '#weapon_dlg')">编辑</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="doRefreshWeapon()">刷新</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteItem('#weapon_grid', weaponTable)">删除</a>
-    </div> -->
   <!-- 添加查询条件  -->      
         名称<input id="weapon_text" type="text"/>
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearchWeapon()">查询</a>
