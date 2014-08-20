@@ -12,19 +12,6 @@
     <script type="text/javascript" src="resources/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="resources/js/common.js"></script>
 <script type="text/javascript">
-$(function(){
-	$('#nav_menu').tree({
-		url: appName + 'navigator.json',
-		loadFilter: function(data){
-			if(data.code == 1){
-				return data.menus;
-			}else{
-				alert('menu load failed');
-				return "";
-			}
-		}
-	});
-});
 </script>
 </head>
 <body class="easyui-layout">

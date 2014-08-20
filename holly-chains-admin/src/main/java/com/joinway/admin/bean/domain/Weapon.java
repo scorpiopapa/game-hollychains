@@ -19,6 +19,7 @@ public class Weapon extends DomainEntity {
 	/**
 	 * 武器名称
 	 */
+	@DomainField(converter=IntToStringConverter.class)
 	private String wid;
 	
 	
