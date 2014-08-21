@@ -90,6 +90,7 @@ public class AdminController extends ExceptionController {
 		return view;
 	}
 
+/*
 	@RequestMapping(value="logout", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Audit
@@ -108,7 +109,7 @@ public class AdminController extends ExceptionController {
 		
 		return new LogoutView();
 	}
-	
+*/
 	@RequestMapping(value="navigator", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@SecurityCheck
