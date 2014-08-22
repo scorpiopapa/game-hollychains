@@ -24,6 +24,8 @@ public class Weapon extends DomainEntity {
 	@DomainField(converter=IntToStringConverter.class)
 	private String wid;
 	
+	@DomainField(converter=StringToIntConverter.class)
+	int weaponRare;
 	
 	/**
 	 * 基础经验值
@@ -310,5 +312,13 @@ public class Weapon extends DomainEntity {
 	@Override
 	public void setId(int id) {
 		wid = String.valueOf(id);
+	}
+
+	public int getWeaponRare() {
+		return weaponRare;
+	}
+
+	public void setWeaponRare(int weaponRare) {
+		this.weaponRare = weaponRare;
 	}
 }

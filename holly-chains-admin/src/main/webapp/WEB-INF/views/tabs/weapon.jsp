@@ -84,10 +84,30 @@ function exportWeaponQuery(){
     <thead>
         <tr>
         <th data-options="field:'ck'" checkbox="true"></th>
-            <th data-options="field:'wid'">序号</th>
+            <th data-options="field:'wid'">csv序号</th>
             <th data-options="field:'weaponId'">武器ID</th>
-            <th data-options="field:'weaponName'">武器名称</th>
-            <!-- 添加字段 -->
+            <th data-options="field:'weaponName'">名称</th>
+            <th data-options="field:'weaponRare'">稀有度</th>
+	        <th data-options="field:'baseExperience'">基础经验值</th>
+	        <th data-options="field:'sellPrice'">金币价格</th>
+	        <th data-options="field:'maxBlood'">基本血量</th>
+	        <th data-options="field:'minBlood'">血量增量</th>
+	        <th data-options="field:'maxBloodReply'">血瓶基本恢复值</th>
+	        <th data-options="field:'minBloodReply'">血瓶恢复值增量</th>
+	        <th data-options="field:'maxBaseAttack'">基本攻击力</th>
+	        <th data-options="field:'minBaseAttack'">基本攻击力增量</th>
+	        <th data-options="field:'maxAttack'">武器攻击力</th>
+	        <th data-options="field:'minAttack'">武器攻击力增量</th>
+	        <th data-options="field:'maxShield'">盾牌基础值</th>
+	        <th data-options="field:'minShield'">盾牌基础值增量</th>
+	        <th data-options="field:'maxDefenseShield'">盾牌基本防御力</th>
+	        <th data-options="field:'minDefenseShield'">盾牌防御力增量</th>
+	        <th data-options="field:'maxVampire'">基本吸血值</th>
+	        <th data-options="field:'minVampire'">吸血值增量</th>
+	        <th data-options="field:'maxCritRate'">基本暴击率</th>
+	        <th data-options="field:'minCritRate'">暴击率增量</th>
+	        <th data-options="field:'maxPenetrationRate'">基本穿透率</th>
+	        <th data-options="field:'minPenetrationRate'">穿透率增量</th>
         </tr>
     </thead>
 </table>
