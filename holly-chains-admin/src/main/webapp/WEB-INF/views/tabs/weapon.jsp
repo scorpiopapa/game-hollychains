@@ -11,7 +11,7 @@ margin-bottom: 5px;
 
 .weapon_item label {
 display: inline-block;
-width: 80px;
+width: 100px;
 }
 </style>
 
@@ -27,6 +27,7 @@ $(function() {
 	
 	// no need order
 	initDataGrid('#weapon_grid', 'search/' + weaponTable + '.json');
+	weaponQuery = '';
 });
 
 /**
@@ -42,7 +43,8 @@ function doSearchWeapon() {
  */
 function getQueryJson(){
 	var json = {
-		name : $('#weapon_text').val()
+		weaponName : $('#weapon_name').val(),
+		weaponId : $('#weapon_id').val()
 	};
 	
 	return json;
@@ -63,7 +65,7 @@ function exportWeaponQuery(){
 		if(r){
 			var form = new Object();
 			// 每列以分号分隔
-			form.columns = 'id,编号';	
+			form.columns = 'wid,CSV序号;weaponId,武器ID;weaponName,名称;weaponRare,稀有度;baseExperience,基础经验值;sellPrice,金币价格;maxBlood,基本血量;minBlood,血量增量;maxBloodReply,血瓶基本恢复值;minBloodReply,血瓶恢复值增量;maxBaseAttack,基本攻击力;minBaseAttack,基本攻击力增量;maxAttack,武器攻击力;minAttack,武器攻击力增量;maxShield,盾牌基础值;minShield,盾牌基础值增量;maxDefenseShield,盾牌基本防御力;minDefenseShield,盾牌防御力增量;maxVampire,基本吸血值;minVampire,吸血值增量;maxCritRate,基本暴击率;minCritRate,暴击率增量;maxPenetrationRate,基本穿透率;minPenetrationRate,穿透率增量';
 			
 			form.table = weaponTable;
 			
@@ -71,9 +73,12 @@ function exportWeaponQuery(){
 			form.query = JSON.stringify(query);
 			
 			// 表格显示的名称
-			form.tableDisplayName = 'Weapon';
+			form.tableDisplayName = '基本武器';
+			form.fileName = '基本武器';
 			
-			//console.log(form);
+			form.type = 'csv';
+			
+			console.log(form);
 			
 			exportExcel(form);
 		}
@@ -84,7 +89,7 @@ function exportWeaponQuery(){
     <thead>
         <tr>
         <th data-options="field:'ck'" checkbox="true"></th>
-            <th data-options="field:'wid'">csv序号</th>
+            <th data-options="field:'wid'">CSV序号</th>
             <th data-options="field:'weaponId'">武器ID</th>
             <th data-options="field:'weaponName'">名称</th>
             <th data-options="field:'weaponRare'">稀有度</th>
@@ -113,7 +118,8 @@ function exportWeaponQuery(){
 </table>
 <div id="weapon_toolbar" style="padding:5px;height:auto">
   <!-- 添加查询条件  -->      
-        名称<input id="weapon_text" type="text"/>
+        名称<input id="weapon_name" type="text"/>
+        武器ID<input id="weapon_id" type="text"/>
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearchWeapon()">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="clearCriteria('#weapon_toolbar')">清除</a>
   		<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showAddDialog('#weapon_form', '#weapon_dlg')">添加</a> 
@@ -122,18 +128,175 @@ function exportWeaponQuery(){
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="exportWeaponQuery()">导出</a>
 </div>
 
-<div id="weapon_dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px" closed="true" buttons="#weapon_dlg_buttons">
+<div id="weapon_dlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true" buttons="#weapon_dlg_buttons">
      <form id="weapon_form" method="post" novalidate>
-        <input name="id" type="hidden">
-     	<!-- 添加编辑列 -->
-         <div class="weapon_item">
-             <label>名称</label>
-             <input name="name" >
-         </div>
-         <div class="weapon_item">
-             <label>描述<</label>
-             <textarea name="description" rows="5" cols="40"></textarea>
-         </div>
+        <input name="wid" type="hidden">
+<table style="width: 100%;">
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>武器ID</label>
+			<input name="weaponId" class="easyui-numberbox easyui-validatebox" data-options="min:1001,decimalSeparator:'',required:true">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>名称</label>
+			<input name="weaponName" class="easyui-validatebox" data-options="required:true">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>稀有度</label>
+			<input name="weaponRare" class="easyui-numberbox" data-options="min:1,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>基础经验值</label>
+			<input name="baseExperience" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>金币价格</label>
+			<input name="sellPrice" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>基本血量</label>
+			<input name="maxBlood" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>血量增量</label>
+			<input name="minBlood" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>血瓶基本恢复值</label>
+			<input name="maxBloodReply" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>血瓶恢复值增量</label>
+			<input name="minBloodReply" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>基本攻击力</label>
+			<input name="maxBaseAttack" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>基本攻击力增量</label>
+			<input name="minBaseAttack" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>武器攻击力</label>
+			<input name="maxAttack" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>武器攻击力增量</label>
+			<input name="minAttack" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>盾牌基础值</label>
+			<input name="maxShield" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>盾牌基础值增量</label>
+			<input name="minShield" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>盾牌基本防御力</label>
+			<input name="maxDefenseShield" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>盾牌防御力增量</label>
+			<input name="minDefenseShield" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>基本吸血值</label>
+			<input name="maxVampire" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>吸血值增量</label>
+			<input name="minVampire" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>基本暴击率</label>
+			<input name="maxCritRate" class="easyui-numberbox" data-options="min:0,precision:1">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>暴击率增量</label>
+			<input name="minCritRate" class="easyui-numberbox" data-options="min:0,precision:1">
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>基本穿透率</label>
+			<input name="maxPenetrationRate" class="easyui-numberbox" data-options="min:0,precision:1">
+		</div>
+		</td>
+		<td>
+		<div class="weapon_item">
+			<label>穿透率增量</label>
+			<input name="minPenetrationRate" class="easyui-numberbox" data-options="min:0,precision:1">
+		</div>
+		</td>
+	</tr>
+</table>
      </form>
  </div>
  <div id="weapon_dlg_buttons">

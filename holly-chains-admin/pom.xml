@@ -8,6 +8,10 @@
   <artifactId>holly-chains-admin</artifactId>
   <packaging>war</packaging>
   
+  <build>
+  	<finalName>holly-chains-admin</finalName>
+  </build>
+  
   <dependencies>
 	<dependency>
 	    <groupId>com.joinway</groupId>
@@ -85,11 +89,5 @@
 		<version>4.3.3</version>
 		<scope>test</scope>
 	</dependency>
-	<dependency>
-		<groupId>commons-io</groupId>
-		<artifactId>commons-io</artifactId>
-		<version>2.4</version>
-		<scope>test</scope>
-	</dependency>	
   </dependencies>
 </project>

@@ -39,7 +39,22 @@
 	</bean>
 	
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
-		<property name="resourceLoaderPath" value="classpath:template"/>
+<!-- 		<property name="resourceLoaderPath">
+			<value>classpath:template</value>
+		</property> -->
+		<!-- <property name="resourceLoaderPath" value="classpath:template"/> -->
+		<property name="velocityProperties">
+			<props>
+				<prop key="resource.loader">class</prop>
+				<prop key="class.resource.loader.class">
+					org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+				</prop>
+				<!-- <prop key="velocimacro.library"></prop>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+				<prop key="default.contentType">text/html; charset=GBK</prop> -->
+			</props>
+		</property>
 	</bean>
 </beans>
 

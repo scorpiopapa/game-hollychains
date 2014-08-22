@@ -3,6 +3,7 @@ package com.bt.chains.bean.domain;
 import com.joinway.bean.domain.DomainEntity;
 import com.joinway.bean.domain.annotation.DomainField;
 import com.joinway.bean.domain.converter.IntToStringConverter;
+import com.joinway.bean.domain.converter.StringToIntConverter;
 
 public class Weapon extends DomainEntity {
 	/**
