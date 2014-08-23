@@ -232,7 +232,7 @@ function formatGender(val, row){
 }
 */
 
-function exportExcel(form){
+function exportFile(form){
 	var fileName;
 	
 	$.ajax({
@@ -256,3 +256,9 @@ function exportExcel(form){
 	
 	window.location.href = 'download/' + fileName + '.json'
 }
+
+/*
+function importFile(jfileId){
+	$(jfileId).click();
+}
+*/

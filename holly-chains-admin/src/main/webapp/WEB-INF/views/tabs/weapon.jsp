@@ -65,7 +65,7 @@ function exportWeaponQuery(){
 		if(r){
 			var form = new Object();
 			// 每列以分号分隔
-			form.columns = 'wid,CSV序号;weaponId,武器ID;weaponName,名称;weaponRare,稀有度;baseExperience,基础经验值;sellPrice,金币价格;maxBlood,基本血量;minBlood,血量增量;maxBloodReply,血瓶基本恢复值;minBloodReply,血瓶恢复值增量;maxBaseAttack,基本攻击力;minBaseAttack,基本攻击力增量;maxAttack,武器攻击力;minAttack,武器攻击力增量;maxShield,盾牌基础值;minShield,盾牌基础值增量;maxDefenseShield,盾牌基本防御力;minDefenseShield,盾牌防御力增量;maxVampire,基本吸血值;minVampire,吸血值增量;maxCritRate,基本暴击率;minCritRate,暴击率增量;maxPenetrationRate,基本穿透率;minPenetrationRate,穿透率增量';
+			form.columns = 'wid;weaponId;weaponName;weaponRare;baseExperience;sellPrice;maxBlood;minBlood;maxBloodReply;minBloodReply;maxBaseAttack;minBaseAttack;maxAttack;minAttack;maxShield;minShield;maxDefenseShield;minDefenseShield;maxVampire;minVampire;maxCritRate;minCritRate;maxPenetrationRate;minPenetrationRate';
 			
 			form.table = weaponTable;
 			
@@ -80,10 +80,20 @@ function exportWeaponQuery(){
 			
 			console.log(form);
 			
-			exportExcel(form);
+			exportFile(form);
 		}
 	});
 }
+
+function importWeapon(){
+	$('#weapon_file').click();
+}
+
+function importFile(file){
+	$('#weapon_file_name').val(file);
+	$('#weapon_file_form').submit();
+}
+
 </script>
 <table id="weapon_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#weapon_toolbar'">
     <thead>
@@ -116,6 +126,16 @@ function exportWeaponQuery(){
         </tr>
     </thead>
 </table>
+
+<div style="visibility:hidden">
+<form id="weapon_file_form" action="import.json" method="post" enctype="multipart/form-data">
+	<input id="weapon_file_name" type="text" name="file" />
+	<!-- <input id="weapon_file" type="file" name="file" accept="text/csv,application/vnd.ms-excel" onchange="importFile(this.value);"/> -->
+	<input id="weapon_file" type="file" name="file" accept=".csv" onchange="importFile(this.value);"/>
+	<input id="weapon_file_submit" type="submit"/>
+</form>
+</div>
+
 <div id="weapon_toolbar" style="padding:5px;height:auto">
   <!-- 添加查询条件  -->      
         名称<input id="weapon_name" type="text"/>
@@ -126,6 +146,7 @@ function exportWeaponQuery(){
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit "onclick="showEditDialog('#weapon_grid', '#weapon_form', '#weapon_dlg')">编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="deleteItem('#weapon_grid', weaponTable)">删除</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="exportWeaponQuery()">导出</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="importWeapon()">导入</a>
 </div>
 
 <div id="weapon_dlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true" buttons="#weapon_dlg_buttons">
