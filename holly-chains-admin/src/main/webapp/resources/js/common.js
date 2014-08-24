@@ -232,11 +232,11 @@ function formatGender(val, row){
 }
 */
 
-function exportFile(form){
+function downloadFile(form){
 	var fileName;
 	
 	$.ajax({
-		url: 'export.json', 
+		url: 'download.json', 
 		type: 'POST',
 		async: false,
 		data: form,

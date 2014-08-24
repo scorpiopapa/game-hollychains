@@ -80,7 +80,7 @@ function exportWeaponQuery(){
 			
 			console.log(form);
 			
-			exportFile(form);
+			downloadFile(form);
 		}
 	});
 }
@@ -89,9 +89,33 @@ function importWeapon(){
 	$('#weapon_file').click();
 }
 
-function importFile(file){
+function submitImportWeapon(){
+	/*
 	$('#weapon_file_name').val(file);
 	$('#weapon_file_form').submit();
+	*/
+	$.ajaxFileUpload({
+        url:'upload.json', 
+        secureuri:false,
+        fileElementId:'weapon_file',
+        dataType: 'html',
+        success: function (data, status){
+        	console.log('data is ' + data);
+        	console.log('status is ' + status);
+            if(data.code == 0){
+            	showInformationMessage('上传完毕');
+            }else{
+            	showErrorMessage('上传失败');
+            }
+        },
+        error: function (data, status, e){
+        	console.log('error data is ');
+        	console.log(data);
+        	console.log('error status is ' + status);
+        	console.log('error e is ' + e);
+        	showErrorMessage('网络连接失败');
+        }
+    });
 }
 
 </script>
@@ -129,9 +153,9 @@ function importFile(file){
 
 <div style="visibility:hidden">
 <form id="weapon_file_form" action="import.json" method="post" enctype="multipart/form-data">
-	<input id="weapon_file_name" type="text" name="file" />
+	<!-- <input id="weapon_file_name" type="text" name="file" /> -->
 	<!-- <input id="weapon_file" type="file" name="file" accept="text/csv,application/vnd.ms-excel" onchange="importFile(this.value);"/> -->
-	<input id="weapon_file" type="file" name="file" accept=".csv" onchange="importFile(this.value);"/>
+	<input id="weapon_file" type="file" name="file" accept=".csv" onchange="submitImportWeapon();"/>
 	<input id="weapon_file_submit" type="submit"/>
 </form>
 </div>

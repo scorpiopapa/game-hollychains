@@ -51,6 +51,11 @@
 			<aop:around pointcut-ref="adminLogger" method="doAround"/>
 		</aop:aspect>
 
+		<aop:aspect ref="logAspect">
+			<aop:pointcut expression="execution(* com.joinway.appx.*..*(..))" id="appxLogger"/>
+			<aop:around pointcut-ref="appxLogger" method="doAround"/>
+		</aop:aspect>
+
 		<aop:aspect ref="securityAspect">
 			<aop:pointcut expression="execution(* com.joinway.*.controller.*.*(..))" id="security"/>
 			<aop:around pointcut-ref="security" method="doAround"/>

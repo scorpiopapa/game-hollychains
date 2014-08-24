@@ -26,6 +26,7 @@ public abstract class BaseTest extends AbstractTransactionalJUnit4SpringContextT
 	
 	private static void setupDataSource(DriverManagerDataSource ds) throws Exception {
 		String ip = "115.28.198.131";
+//		String ip = "192.168.1.108";
 		String localIP = InetAddress.getLocalHost().getHostAddress();
 		if("10.169.151.223".equals(localIP)){
 			ip = "localhost";
