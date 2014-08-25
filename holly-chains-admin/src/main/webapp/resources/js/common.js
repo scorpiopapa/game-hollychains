@@ -236,7 +236,7 @@ function downloadFile(form){
 	var fileName;
 	
 	$.ajax({
-		url: 'download.json', 
+		url: 'export.json', 
 		type: 'POST',
 		async: false,
 		data: form,

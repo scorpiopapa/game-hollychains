@@ -90,34 +90,47 @@ function importWeapon(){
 }
 
 function submitImportWeapon(){
-	/*
-	$('#weapon_file_name').val(file);
-	$('#weapon_file_form').submit();
-	*/
+	var fileName;
+	var uploadFlag = true;
+	
 	$.ajaxFileUpload({
         url:'upload.json', 
         secureuri:false,
         fileElementId:'weapon_file',
-        dataType: 'html',
+        dataType: 'json',
+        async: false,
         success: function (data, status){
-        	console.log('data is ' + data);
-        	console.log('status is ' + status);
             if(data.code == 0){
-            	showInformationMessage('上传完毕');
+            	fileName = data.fileName;
+            	console.log('returned name ' + fileName);
+            	
+            	if(fileName){
+            		window.location.href = 'import/' + fileName + '/' + weaponTable + '.json';
+            		showInformationMessage('上传完毕');
+            	}else{
+            		showErrorMessage('导入失败');
+            	}
+            }else if(data.code = 1001 || data.code == 1008){
+            	showErrorMessage('文件格式错误');
             }else{
             	showErrorMessage('上传失败');
             }
         },
         error: function (data, status, e){
-        	console.log('error data is ');
-        	console.log(data);
-        	console.log('error status is ' + status);
-        	console.log('error e is ' + e);
+        	uploadFlag = false;
         	showErrorMessage('网络连接失败');
         }
     });
+    
+    /*
+    console.log(uploadFlag);
+    console.log(fileName);
+    if(uploadFlag && fileName){
+    	window.location.href = 'import/' + fileName + '?' + weaponTable + '.json';
+    	showInformationMessage('上传完毕');
+    }
+    */
 }
-
 </script>
 <table id="weapon_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#weapon_toolbar'">
     <thead>

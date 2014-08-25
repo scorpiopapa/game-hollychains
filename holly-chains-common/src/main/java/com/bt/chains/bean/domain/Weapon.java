@@ -305,6 +305,7 @@ public class Weapon extends DomainEntity {
 		return "WID";
 	}
 
+/*
 	@Override
 	public int getId() {
 		return Integer.valueOf(wid);
@@ -314,7 +315,7 @@ public class Weapon extends DomainEntity {
 	public void setId(int id) {
 		wid = String.valueOf(id);
 	}
-
+*/
 	public int getWeaponRare() {
 		return weaponRare;
 	}
