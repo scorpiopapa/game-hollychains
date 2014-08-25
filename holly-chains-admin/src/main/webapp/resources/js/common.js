@@ -257,8 +257,43 @@ function downloadFile(form){
 	window.location.href = 'download/' + fileName + '.json'
 }
 
-/*
-function importFile(jfileId){
+function selectFile(jfileId){
 	$(jfileId).click();
 }
-*/
+
+function uploadFile(fileId){
+	var fileName;
+	
+	$.ajaxFileUpload({
+        url: 'upload.json', 
+        secureuri:false,
+        fileElementId: fileId,
+        dataType: 'json',
+        async: false,
+        success: function (data, status){
+            if(data.code == 0){
+            	fileName = data.fileName;
+            	console.log('returned name ' + fileName);
+            	
+            	if(fileName){
+            		$.post('import/' + fileName + '/' + weaponTable + '.json', function(data){
+            			if(data.code == 0){
+            				showInformationMessage('导入成功');
+            			}else{
+            				showErrorMessage('导入失败');
+            			}
+            		});
+            	}else{
+            		showErrorMessage('导入失败');
+            	}
+            }else if(data.code = 1001 || data.code == 1008){
+            	showErrorMessage('文件格式错误');
+            }else{
+            	showErrorMessage('上传失败');
+            }
+        },
+        error: function (data, status, e){
+        	showErrorMessage('网络连接失败');
+        }
+    });
+}

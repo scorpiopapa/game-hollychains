@@ -84,53 +84,6 @@ function exportWeaponQuery(){
 		}
 	});
 }
-
-function importWeapon(){
-	$('#weapon_file').click();
-}
-
-function submitImportWeapon(){
-	var fileName;
-	var uploadFlag = true;
-	
-	$.ajaxFileUpload({
-        url:'upload.json', 
-        secureuri:false,
-        fileElementId:'weapon_file',
-        dataType: 'json',
-        async: false,
-        success: function (data, status){
-            if(data.code == 0){
-            	fileName = data.fileName;
-            	console.log('returned name ' + fileName);
-            	
-            	if(fileName){
-            		window.location.href = 'import/' + fileName + '/' + weaponTable + '.json';
-            		showInformationMessage('上传完毕');
-            	}else{
-            		showErrorMessage('导入失败');
-            	}
-            }else if(data.code = 1001 || data.code == 1008){
-            	showErrorMessage('文件格式错误');
-            }else{
-            	showErrorMessage('上传失败');
-            }
-        },
-        error: function (data, status, e){
-        	uploadFlag = false;
-        	showErrorMessage('网络连接失败');
-        }
-    });
-    
-    /*
-    console.log(uploadFlag);
-    console.log(fileName);
-    if(uploadFlag && fileName){
-    	window.location.href = 'import/' + fileName + '?' + weaponTable + '.json';
-    	showInformationMessage('上传完毕');
-    }
-    */
-}
 </script>
 <table id="weapon_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#weapon_toolbar'">
     <thead>
@@ -164,11 +117,10 @@ function submitImportWeapon(){
     </thead>
 </table>
 
-<div style="visibility:hidden">
-<form id="weapon_file_form" action="import.json" method="post" enctype="multipart/form-data">
-	<!-- <input id="weapon_file_name" type="text" name="file" /> -->
-	<!-- <input id="weapon_file" type="file" name="file" accept="text/csv,application/vnd.ms-excel" onchange="importFile(this.value);"/> -->
-	<input id="weapon_file" type="file" name="file" accept=".csv" onchange="submitImportWeapon();"/>
+<div style="display:none">
+<form id="weapon_file_form" enctype="multipart/form-data">
+	<!-- <input id="weapon_file" type="file" name="file" accept="application/vnd.ms-excel" onchange="importFile(this.value);"/> -->
+	<input id="weapon_file" type="file" name="file" accept=".csv" onchange="uploadFile('weapon_file');"/>
 	<input id="weapon_file_submit" type="submit"/>
 </form>
 </div>
@@ -183,7 +135,7 @@ function submitImportWeapon(){
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit "onclick="showEditDialog('#weapon_grid', '#weapon_form', '#weapon_dlg')">编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="deleteItem('#weapon_grid', weaponTable)">删除</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="exportWeaponQuery()">导出</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="importWeapon()">导入</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="selectFile('#weapon_file')">导入</a>
 </div>
 
 <div id="weapon_dlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true" buttons="#weapon_dlg_buttons">
