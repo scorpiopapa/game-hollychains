@@ -44,7 +44,8 @@ function doSearchWeapon() {
 function getQueryJson(){
 	var json = {
 		weaponName : $('#weapon_name').val(),
-		weaponId : $('#weapon_id').val()
+		weaponId : $('#weapon_id').val(),
+		wid: $('#weapon_wid').val()
 	};
 	
 	return json;
@@ -119,7 +120,6 @@ function exportWeaponQuery(){
 
 <div style="display:none">
 <form id="weapon_file_form" enctype="multipart/form-data">
-	<!-- <input id="weapon_file" type="file" name="file" accept="application/vnd.ms-excel" onchange="importFile(this.value);"/> -->
 	<input id="weapon_file" type="file" name="file" accept=".csv" onchange="uploadFile('weapon_file');"/>
 	<input id="weapon_file_submit" type="submit"/>
 </form>
@@ -127,6 +127,7 @@ function exportWeaponQuery(){
 
 <div id="weapon_toolbar" style="padding:5px;height:auto">
   <!-- 添加查询条件  -->      
+	CSV序号<input id="weapon_wid" type="text"/>
         名称<input id="weapon_name" type="text"/>
         武器ID<input id="weapon_id" type="text"/>
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearchWeapon()">查询</a>
@@ -282,13 +283,13 @@ function exportWeaponQuery(){
 		<td style="width: 50%;">
 		<div class="weapon_item">
 			<label>基本暴击率</label>
-			<input name="maxCritRate" class="easyui-numberbox" data-options="min:0,precision:1">
+			<input name="maxCritRate" class="easyui-numberbox" data-options="min:0,max:100,precision:1">
 		</div>
 		</td>
 		<td>
 		<div class="weapon_item">
 			<label>暴击率增量</label>
-			<input name="minCritRate" class="easyui-numberbox" data-options="min:0,precision:1">
+			<input name="minCritRate" class="easyui-numberbox" data-options="min:0,max:100,precision:1">
 		</div>
 		</td>
 	</tr>
@@ -296,13 +297,13 @@ function exportWeaponQuery(){
 		<td style="width: 50%;">
 		<div class="weapon_item">
 			<label>基本穿透率</label>
-			<input name="maxPenetrationRate" class="easyui-numberbox" data-options="min:0,precision:1">
+			<input name="maxPenetrationRate" class="easyui-numberbox" data-options="min:0,max:100,precision:1">
 		</div>
 		</td>
 		<td>
 		<div class="weapon_item">
 			<label>穿透率增量</label>
-			<input name="minPenetrationRate" class="easyui-numberbox" data-options="min:0,precision:1">
+			<input name="minPenetrationRate" class="easyui-numberbox" data-options="min:0,max:100,precision:1">
 		</div>
 		</td>
 	</tr>

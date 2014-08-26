@@ -11,7 +11,7 @@ $(function() {
 		}
 	}).fail(function(data) {
 		// error occured
-		console.log(data);
+		handleError(data.code);
 	});
 });
 </script>

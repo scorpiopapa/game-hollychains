@@ -8,7 +8,7 @@ $(function(){
 			if(data.code == 0){
 				return data.menus;
 			}else{
-				alert('menu load failed');
+				handleError(data.code);
 				return "";
 			}
 		},

@@ -57,7 +57,7 @@ function initDataGrid(jid, url, pageSize, pageList) {
 			if (data.code == 0) {
 				return data.record;
 			} else {
-				alert('列表数据加载失败');
+				handleError(data.code);
 				return "";
 			}
 		},
@@ -123,7 +123,7 @@ function saveItem(jgridId, jformId, jdlgId, tableName) {
 			return $(this).form('validate');
 		},
 		success : function(data) {
-			console.log(data);
+			//console.log(data);
 			var view = JSON.parse(data);
 			console.log(view);
 			if (view.code == 0) {
@@ -132,6 +132,7 @@ function saveItem(jgridId, jformId, jdlgId, tableName) {
 				refreshDataGrid(jgridId);
 			} else {
 				showErrorMessage('保存失败');
+				handleError(data.code);
 			}
 		}
 	});
@@ -148,12 +149,13 @@ function deleteItem(jgridId, tableName){
 		        	ids += rows[i].id + ',';
 		        }
 		        ids = ids.substring(0, ids.length - 1);
-		        console.log(ids);
+		        //console.log(ids);
 		        
 	            $.post(appName + 'delete/' + tableName + '.json', {id:ids}, function(data){
 	            console.log(data.code);
 	                if (data.code != 0){
 	                	showErrorMessage('删除失败');
+	                	handleError(data.code);
 	                }else{
 	                	refreshDataGrid(jgridId);
 	                }
@@ -242,7 +244,8 @@ function downloadFile(form){
 		data: form,
     	success: function(data) {
 	        if(data.code != 0){
-	        	showErrorMessage('保存失败')
+	        	showErrorMessage('保存失败');
+	        	handleError(data.code);
 	        }else{
 	        	fileName = data.fileName;
 	        }
@@ -281,6 +284,7 @@ function uploadFile(fileId){
             				showInformationMessage('导入成功');
             			}else{
             				showErrorMessage('导入失败');
+            				handleError(data.code);
             			}
             		});
             	}else{
@@ -290,6 +294,7 @@ function uploadFile(fileId){
             	showErrorMessage('文件格式错误');
             }else{
             	showErrorMessage('上传失败');
+            	handleError(data.code);
             }
         },
         error: function (data, status, e){
