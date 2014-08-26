@@ -297,3 +297,9 @@ function uploadFile(fileId){
         }
     });
 }
+
+function handleError(code){
+	if(code == 1003){
+		window.location.href = 'login.html';
+	}
+}
