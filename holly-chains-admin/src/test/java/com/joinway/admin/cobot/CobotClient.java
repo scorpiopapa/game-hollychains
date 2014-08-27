@@ -3,7 +3,8 @@ package com.joinway.admin.cobot;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bt.chains.bean.domain.Weapon;
+import com.bt.chains.bean.domain.WeaponConfigView;
+import com.joinway.cobot.ui.bean.DataGridConfig;
 import com.joinway.cobot.ui.service.DataGridCobot;
 
 
