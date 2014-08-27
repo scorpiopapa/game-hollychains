@@ -12,7 +12,12 @@ public class CobotClient extends BaseTest {
 	@Autowired DataGridCobot cobot;
 	
 	@Test public void test1() throws Exception {
-		cobot.produceTableHtml(Weapon.class, "c:/weapon.html");
+//		cobot.produceTableHtml(Weapon.class, "c:/weapon.html");
+		DataGridConfig config = new DataGridConfig();
+		config.setOutputFile("c:/gasha_config");
+		config.setDataFileType("csv");
+		
+		cobot.produceTableHtml(WeaponConfigView.class, config);
 		System.out.println("done!");
 	}
 }

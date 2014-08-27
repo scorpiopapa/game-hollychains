@@ -71,6 +71,9 @@ function initDataGrid(jid, url, pageSize, pageList) {
 	});
 }
 
+function refreshDataGrid(jgridId){
+	$(jgridId).datagrid('reload');
+}
 
 function searchDataGrid(jid, json) {
 	$(jid).datagrid('load', json);
@@ -138,7 +141,7 @@ function saveItem(jgridId, jformId, jdlgId, tableName) {
 	});
 }
 
-function deleteItem(jgridId, tableName){
+function deleteItem(jgridId, tableName, idName){
     var rows = $(jgridId).datagrid('getSelections');
     
     if(rows && rows.length > 0){
@@ -146,7 +149,9 @@ function deleteItem(jgridId, tableName){
 			if(r){
 		        var ids = '';
 		        for(var i = 0; i < rows.length; i++){
-		        	ids += rows[i].id + ',';
+		        	var obj = rows[i];
+		        	
+		        	ids += eval('obj.' + idName) + ',';
 		        }
 		        ids = ids.substring(0, ids.length - 1);
 		        //console.log(ids);
@@ -261,10 +266,14 @@ function downloadFile(form){
 }
 
 function selectFile(jfileId){
-	$(jfileId).click();
+	showConfirmMessage('导入数据会覆盖原有数据，是否继续？', function(r){
+		if(r){
+			$(jfileId).click();
+		}
+	});
 }
 
-function uploadFile(fileId){
+function uploadFile(fileId, table, callback){
 	var fileName;
 	
 	$.ajaxFileUpload({
@@ -279,9 +288,10 @@ function uploadFile(fileId){
             	console.log('returned name ' + fileName);
             	
             	if(fileName){
-            		$.post('import/' + fileName + '/' + weaponTable + '.json', function(data){
+            		$.post('import/' + fileName + '/' + table + '.json', function(data){
             			if(data.code == 0){
-            				showInformationMessage('导入成功');
+					(callback && typeof(callback) === "function") && callback(data);
+            				//showInformationMessage('导入成功');
             			}else{
             				showErrorMessage('导入失败');
             				handleError(data.code);
@@ -301,6 +311,25 @@ function uploadFile(fileId){
         	showErrorMessage('网络连接失败');
         }
     });
+}
+
+function resetSelect(jselectId, data, valueName, textName, selectedValue){
+	$(jselectId).empty();
+	
+	var count = data.record.total;
+	
+	for(var i = 0; i < count; i++){
+		var e = data.record.rows[i];
+		var value = eval('e.' + valueName);
+		var text = eval('e.' + textName);
+		
+		$(jselectId).append('<option value="'+ value + '">' + text + '</option>');
+	}	
+	
+	console.log('selected value ' + selectedValue);
+	if(selectedValue){
+		$(jselectId).val(selectedValue);
+	}
 }
 
 function handleError(code){

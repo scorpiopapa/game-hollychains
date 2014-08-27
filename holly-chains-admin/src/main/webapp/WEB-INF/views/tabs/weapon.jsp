@@ -55,7 +55,7 @@ function getQueryJson(){
  * 刷新
  */
 function doRefreshWeapon() {
-	$('#weapon_grid').datagrid('reload');
+	refreshDataGrid('#weapon_grid');
 }
 
 /**
@@ -120,7 +120,7 @@ function exportWeaponQuery(){
 
 <div style="display:none">
 <form id="weapon_file_form" enctype="multipart/form-data">
-	<input id="weapon_file" type="file" name="file" accept=".csv" onchange="uploadFile('weapon_file');"/>
+	<input id="weapon_file" type="file" name="file" accept=".csv" onchange="uploadFile('weapon_file', weaponTable, doRefreshWeapon);"/>
 	<input id="weapon_file_submit" type="submit"/>
 </form>
 </div>
@@ -134,51 +134,54 @@ function exportWeaponQuery(){
         <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="clearCriteria('#weapon_toolbar')">清除</a>
   		<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showAddDialog('#weapon_form', '#weapon_dlg')">添加</a> 
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit "onclick="showEditDialog('#weapon_grid', '#weapon_form', '#weapon_dlg')">编辑</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="deleteItem('#weapon_grid', weaponTable)">删除</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="deleteItem('#weapon_grid', weaponTable, 'weaponId')">删除</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="exportWeaponQuery()">导出</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="selectFile('#weapon_file')">导入</a>
 </div>
 
 <div id="weapon_dlg" class="easyui-dialog" style="width:650px;height:500px;padding:10px 20px" closed="true" buttons="#weapon_dlg_buttons">
      <form id="weapon_form" method="post" novalidate>
-        <input name="wid" type="hidden">
 <table style="width: 100%;">
 	<tr>
+		<td style="width: 50%;">
+		<div class="weapon_item">
+			<label>CSV序号</label>
+			<input name="wid" class="easyui-numberbox easyui-validatebox" data-options="min:1,decimalSeparator:'',required:true">
+		</div>
+		</td>
 		<td style="width: 50%;">
 		<div class="weapon_item">
 			<label>武器ID</label>
 			<input name="weaponId" class="easyui-numberbox easyui-validatebox" data-options="min:1001,decimalSeparator:'',required:true">
 		</div>
 		</td>
-		<td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
 		<div class="weapon_item">
 			<label>名称</label>
 			<input name="weaponName" class="easyui-validatebox" data-options="required:true">
 		</div>
 		</td>
-	</tr>
-	<tr>
 		<td style="width: 50%;">
 		<div class="weapon_item">
 			<label>稀有度</label>
 			<input name="weaponRare" class="easyui-numberbox" data-options="min:1,decimalSeparator:''">
 		</div>
 		</td>
-		<td>
+	</tr>
+	<tr>
+		<td style="width: 50%;">
 		<div class="weapon_item">
 			<label>基础经验值</label>
 			<input name="baseExperience" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
 		</div>
 		</td>
-	</tr>
-	<tr>
 		<td style="width: 50%;">
 		<div class="weapon_item">
 			<label>金币价格</label>
 			<input name="sellPrice" class="easyui-numberbox" data-options="min:0,decimalSeparator:''">
 		</div>
-		</td>
-		<td>
 		</td>
 	</tr>
 	<tr>
@@ -314,5 +317,6 @@ function exportWeaponQuery(){
      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveItem('#weapon_grid', '#weapon_form', '#weapon_dlg', weaponTable)">保存</a>
      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog('#weapon_dlg')">取消</a>
  </div>
+
 
 

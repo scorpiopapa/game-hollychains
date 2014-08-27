@@ -302,7 +302,7 @@ public class Weapon extends DomainEntity {
 
 	@Override
 	public String getIdName() {
-		return "WID";
+		return "WEAPON_ID";
 	}
 
 /*
