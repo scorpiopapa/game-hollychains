@@ -135,14 +135,15 @@ function editGashaConfigItem(){
 		$('#gashaConfig_save').click(function(){
 			saveItem('#gashaConfig_grid', '#gashaConfig_form', '#gashaConfig_dlg', gashaConfigTable);
 		});
+	}
 }
 </script>
 <table id="gashaConfig_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#gashaConfig_toolbar'">
     <thead>
         <tr>
         <th data-options="field:'ck'" checkbox="true"></th>
-        <th data-options="field:'weaponId'">weaponId</th>
-        <th data-options="field:'weight'">weight</th>
+        <th data-options="field:'weaponId'">武器ID</th>
+        <th data-options="field:'weight'">权重</th>
         </tr>
     </thead>
 </table>
@@ -177,13 +178,13 @@ function editGashaConfigItem(){
 <div id="gashaConfig_dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px" closed="true" buttons="#gashaConfig_dlg_buttons">
      <form id="gashaConfig_form" method="post" novalidate>
 		<div class="gashaConfig_item">
-			<label>weaponId</label>
-			<input id="gasha_weapon_id2" name="weaponId" type="hidden">
+			<label>武器ID</label>
+			<input id="gasha_weapon_id2" name="weaponId">
 			<select id="gasha_weapon_id">
 			</select>
 		</div>
 		<div class="gashaConfig_item">
-			<label>weight</label>
+			<label>权重</label>
 			<input name="weight">
 		</div>
      </form>
