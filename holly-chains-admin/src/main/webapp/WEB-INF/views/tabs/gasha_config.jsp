@@ -168,7 +168,7 @@ function editGashaConfigItem(){
         weaponId<input id="gashaConfig_weaponId" type="text"/>
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearchGashaConfig()">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="clearCriteria('#gashaConfig_toolbar')">清除</a>
-  		<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showAddDialog('#gashaConfig_form', '#gashaConfig_dlg')">添加</a> 
+  		<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="addGashaCofnigItem()">添加</a> 
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit "onclick="editGashaConfigItem()">编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="deleteItem('#gashaConfig_grid', gashaConfigTable, 'weaponId')">删除</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="exportGashaConfigQuery()">导出</a>
@@ -179,8 +179,8 @@ function editGashaConfigItem(){
      <form id="gashaConfig_form" method="post" novalidate>
 		<div class="gashaConfig_item">
 			<label>武器ID</label>
-			<input id="gasha_weapon_id2" name="weaponId">
-			<select id="gasha_weapon_id">
+			<input id="gasha_weapon_id2" name="weaponId" readonly>
+			<select id="gasha_weapon_id" onchange="$('#gasha_weapon_id2').val(this.value);">
 			</select>
 		</div>
 		<div class="gashaConfig_item">
@@ -190,7 +190,7 @@ function editGashaConfigItem(){
      </form>
  </div>
  <div id="gashaConfig_dlg_buttons">
-     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveItem('#gashaConfig_grid', '#gashaConfig_form', '#gashaConfig_dlg', gashaConfigTable)">保存</a>
+     <a id="gashaConfig_save" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog('#gashaConfig_dlg')">取消</a>
  </div>
 
