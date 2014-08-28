@@ -105,7 +105,7 @@ function addGashaCofnigItem(){
 	fillGashaCofnigSelect();
 
 	$('#gasha_weapon_id').show();
-	//$('#gasha_weapon_id2').hide();
+	$('#gasha_weapon_id2').hide();
 
 	$('#gasha_weapon_id option:first').prop("selected", 'selected');
 
@@ -127,7 +127,7 @@ function editGashaConfigItem(){
 	var flag = showEditDialog('#gashaConfig_grid', '#gashaConfig_form', '#gashaConfig_dlg');
 	
 	if(flag){
-		fillGashaCofnigSelect();
+		//fillGashaCofnigSelect();
 	
 		$('#gasha_weapon_id').hide();
 		$('#gasha_weapon_id2').show();
@@ -165,7 +165,7 @@ function editGashaConfigItem(){
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="deleteItem('#gashaConfig_grid', gashaConfigTable)">删除</a>
     </div> -->
   <!-- 添加查询条件  -->      
-        weaponId<input id="gashaConfig_weaponId" type="text"/>
+        武器ID<input id="gashaConfig_weaponId" type="text"/>
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearchGashaConfig()">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="clearCriteria('#gashaConfig_toolbar')">清除</a>
   		<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="addGashaCofnigItem()">添加</a> 
@@ -185,7 +185,7 @@ function editGashaConfigItem(){
 		</div>
 		<div class="gashaConfig_item">
 			<label>权重</label>
-			<input name="weight">
+			<input name="weight" class="easyui-numberbox" data-options="min:0,max:100,decimalSeparator:''">
 		</div>
      </form>
  </div>
