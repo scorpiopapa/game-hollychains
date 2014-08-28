@@ -88,17 +88,53 @@ function exportGashaConfigQuery(){
 	});
 }
 
-function editGashaConfigItem(){
-	showEditDialog('#gashaConfig_grid', '#gashaConfig_form', '#gashaConfig_dlg');
-	
+function fillGashaCofnigSelect(){
 	$.get('search/distinct/weapon.json?field=weaponId&field=weaponName', function(data) {
 		if(data && data.code == 0){
-			resetSelect('#gasha_weapon_id', data, 'weaponId', 'weaponName', $('#gasha_weapon_id2').val());
+			resetSelect2('#gasha_weapon_id', data, 'weaponId', 'weaponName');
 		}
 	}).fail(function(data) {
 		// error occured
 		handleError(data.code);
 	});	
+}
+
+function addGashaCofnigItem(){
+	showAddDialog('#gashaConfig_form', '#gashaConfig_dlg');
+
+	fillGashaCofnigSelect();
+
+	$('#gasha_weapon_id').show();
+	//$('#gasha_weapon_id2').hide();
+
+	$('#gasha_weapon_id option:first').prop("selected", 'selected');
+
+	$('#gashaConfig_save').click(function(){
+		var actionContext = new Object();
+		actionContext.table = 'GASHA_CONFIG';
+		actionContext.action = 'add';
+		actionContext.idName = 'weaponId';
+		actionContext.idValue = $('#gasha_weapon_id').val();
+		console.log(actionContext);
+	
+		$('#gasha_weapon_id2').val($('#gasha_weapon_id').val());
+		
+		saveItem('#gashaConfig_grid', '#gashaConfig_form', '#gashaConfig_dlg', gashaConfigTable, actionContext);
+	});
+}
+
+function editGashaConfigItem(){
+	var flag = showEditDialog('#gashaConfig_grid', '#gashaConfig_form', '#gashaConfig_dlg');
+	
+	if(flag){
+		fillGashaCofnigSelect();
+	
+		$('#gasha_weapon_id').hide();
+		$('#gasha_weapon_id2').show();
+	
+		$('#gashaConfig_save').click(function(){
+			saveItem('#gashaConfig_grid', '#gashaConfig_form', '#gashaConfig_dlg', gashaConfigTable);
+		});
 }
 </script>
 <table id="gashaConfig_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#gashaConfig_toolbar'">

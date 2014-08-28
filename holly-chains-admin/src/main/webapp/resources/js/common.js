@@ -98,11 +98,15 @@ function showAddDialog(jformId, jdlgId, title){
 function showEditDialog(jgridId, jformId, jdlgId, title, callback){
 	var rows = $(jgridId).datagrid('getSelections');
 
+	var flag = false;
+	
 	if(!rows || rows.length == 0){
 		showWarningMessage('请选择要编辑的行');
 	}else if(rows.length > 1){
 		showWarningMessage('只能选择一行进行编辑');
 	}else{
+		flag = true;
+		
 		$(jformId).form('load',rows[0]);
 			$(jdlgId).dialog({
 			title: title ? title : '编辑',
@@ -112,18 +116,44 @@ function showEditDialog(jgridId, jformId, jdlgId, title, callback){
 		
 		(callback && typeof(callback) === "function") && callback(rows[0]);
 	} 
+	
+	return flag;
 }
 
 function closeDialog(jdlgId) {
 	$(jdlgId).dialog('close')
 }
 
-function saveItem(jgridId, jformId, jdlgId, tableName) {
-	//console.log(tableName);
+/**
+ * actionContext contains below fields
+ * action - update/add
+ * idName - id name of domain object, such as userId
+ * idValue - the target id value
+ * table - the target table name
+ */
+function saveItem(jgridId, jformId, jdlgId, tableName, actionContext) {
 	$(jformId).form('submit', {
-		url : appName + 'save/' + tableName + '.json',
+		url : 'save/' + tableName + '.json',
 		onSubmit : function() {
-			return $(this).form('validate');
+			var flag = $(this).form('validate');
+			if(flag && actionContext){
+				var action = actionContext.action;
+				 
+				if(action == 'add'){
+					var idName = actionContext.idName;
+					var idValue = actionContext.idValue;
+					var table = actionContext.table;
+				 
+					$.get('search/' + table + '.json?' + idName + '=' + idValue, function(data){
+						if(data && data.code == 0 && data.record && data.record.total > 0){
+							showErrorMessage('数据已存在');
+							flag = false;
+						}
+					});
+				}
+			}
+				 
+			return flag;
 		},
 		success : function(data) {
 			//console.log(data);
@@ -324,6 +354,25 @@ function resetSelect(jselectId, data, valueName, textName, selectedValue){
 		var text = eval('e.' + textName);
 		
 		$(jselectId).append('<option value="'+ value + '">' + text + '</option>');
+	}	
+	
+	console.log('selected value ' + selectedValue);
+	if(selectedValue){
+		$(jselectId).val(selectedValue);
+	}
+}
+
+function resetSelect2(jselectId, data, valueName, textName, selectedValue){
+	$(jselectId).empty();
+	
+	var count = data.record.total;
+	
+	for(var i = 0; i < count; i++){
+		var e = data.record.rows[i];
+		var value = eval('e.' + valueName);
+		var text = eval('e.' + textName);
+		
+		$(jselectId).append('<option value="'+ value + '">' + value + ' - ' + text + '</option>');
 	}	
 	
 	console.log('selected value ' + selectedValue);

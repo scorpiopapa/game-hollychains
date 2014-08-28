@@ -3,7 +3,7 @@ package com.joinway.admin.cobot;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bt.chains.bean.domain.WeaponConfigView;
+import com.joinway.admin.bean.domain.TreeMenu;
 import com.joinway.cobot.ui.bean.DataGridConfig;
 import com.joinway.cobot.ui.service.DataGridCobot;
 
@@ -18,7 +18,7 @@ public class CobotClient extends BaseTest {
 		config.setOutputFile("c:/gasha_config");
 		config.setDataFileType("csv");
 		
-		cobot.produceTableHtml(WeaponConfigView.class, config);
+		cobot.produceTableHtml(TreeMenu.class, config);
 		System.out.println("done!");
 	}
 }
