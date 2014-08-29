@@ -85,6 +85,22 @@ function exportWeaponQuery(){
 		}
 	});
 }
+
+
+function addWeaponItem(){
+	showAddDialog('#weapon_form', '#weapon_dlg');
+	
+	$('#weapon_save').click(function(){
+		var actionContext = new Object();
+		actionContext.table = 'weapon';
+		actionContext.action = 'add';
+		actionContext.idName = 'weaponId';
+		actionContext.idValue = $('#weapon_id_input').val();
+		console.log(actionContext);
+		 
+		saveItem('#weapon_grid', '#weapon_form', '#weapon_dlg', weaponTable, actionContext);
+	});
+}
 </script>
 <table id="weapon_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#weapon_toolbar'">
     <thead>
@@ -132,7 +148,7 @@ function exportWeaponQuery(){
         武器ID<input id="weapon_id" type="text"/>
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearchWeapon()">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="clearCriteria('#weapon_toolbar')">清除</a>
-  		<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="showAddDialog('#weapon_form', '#weapon_dlg')">添加</a> 
+  		<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="addWeaponItem()">添加</a> 
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit "onclick="showEditDialog('#weapon_grid', '#weapon_form', '#weapon_dlg')">编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="deleteItem('#weapon_grid', weaponTable, 'weaponId')">删除</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="exportWeaponQuery()">导出</a>
@@ -152,7 +168,7 @@ function exportWeaponQuery(){
 		<td style="width: 50%;">
 		<div class="weapon_item">
 			<label>武器ID</label>
-			<input name="weaponId" class="easyui-numberbox easyui-validatebox" data-options="min:1001,decimalSeparator:'',required:true">
+			<input id="weapon_id_input" name="weaponId" class="easyui-numberbox easyui-validatebox" data-options="min:1001,decimalSeparator:'',required:true">
 		</div>
 		</td>
 	</tr>
@@ -314,9 +330,10 @@ function exportWeaponQuery(){
      </form>
  </div>
  <div id="weapon_dlg_buttons">
-     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveItem('#weapon_grid', '#weapon_form', '#weapon_dlg', weaponTable)">保存</a>
+     <a id="weapon_save" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog('#weapon_dlg')">取消</a>
  </div>
+
 
 
 
