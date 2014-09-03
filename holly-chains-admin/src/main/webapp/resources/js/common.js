@@ -39,8 +39,9 @@ function showConfirmMessage(text, callback, title){
 	$.messager.confirm(t, text , callback);
 }
 
-function initDataGrid(jid, url, pageSize, pageList) {
-	console.log(url);
+function initDataGrid(jid, aurl, pageSize, pageList) {
+	
+	console.log(aurl);
 	var size = 30;
 	var list = [ 20, 30, 40, 50 ];
 
@@ -61,7 +62,7 @@ function initDataGrid(jid, url, pageSize, pageList) {
 				return "";
 			}
 		},
-		url : url,
+		url : aurl,
 		pageSize : size,
 		pageList : list,
 		pagination : true,
@@ -69,6 +70,8 @@ function initDataGrid(jid, url, pageSize, pageList) {
 		singleSelect : false,
 		method : 'post'
 	});
+	//debugger;
+	console.log('done init data grid');
 }
 
 function refreshDataGrid(jgridId){
