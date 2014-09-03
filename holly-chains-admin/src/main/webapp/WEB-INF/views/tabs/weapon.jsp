@@ -102,7 +102,7 @@ function addWeaponItem(){
 	});
 }
 </script>
-<table id="weapon_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#weapon_toolbar'">
+<table id="weapon_grid" style="width:700px;height:250px" data-options="toolbar:'#weapon_toolbar'">
     <thead>
         <tr>
         <th data-options="field:'ck'" checkbox="true"></th>

@@ -138,7 +138,7 @@ function editGashaConfigItem(){
 	}
 }
 </script>
-<table id="gashaConfig_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#gashaConfig_toolbar'">
+<table id="gashaConfig_grid" style="width:700px;height:250px" data-options="toolbar:'#gashaConfig_toolbar'">
     <thead>
         <tr>
         <th data-options="field:'ck'" checkbox="true"></th>
