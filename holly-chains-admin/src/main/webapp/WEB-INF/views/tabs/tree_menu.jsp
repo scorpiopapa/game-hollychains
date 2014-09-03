@@ -29,7 +29,7 @@ $(function() {
 	initDataGrid('#treeMenu_grid', 'search/' + treeMenuTable + '.json');
 	treeMenuQuery = '';
 });
-
+//debugger;
 /**
  * 查询
  */
@@ -122,7 +122,8 @@ function exportTreeMenuQuery(){
 	});
 }
 </script>
-<table id="treeMenu_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#treeMenu_toolbar'">
+<!-- <table id="treeMenu_grid" class="easyui-datagrid" style="width:700px;height:250px" data-options="toolbar:'#treeMenu_toolbar',url:'search/tree_menu.json?id=1'"> -->
+<table id="treeMenu_grid" style="width:700px;height:250px" data-options="toolbar:'#treeMenu_toolbar',url:'search/tree_menu.json?id=1'">
     <thead>
         <tr>
         <th data-options="field:'ck'" checkbox="true"></th>
@@ -177,5 +178,6 @@ function exportTreeMenuQuery(){
      <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog('#treeMenu_dlg')">取消</a>
  </div>
 
-
-
+<script type="text/javascript">
+//debugger;
+</script>

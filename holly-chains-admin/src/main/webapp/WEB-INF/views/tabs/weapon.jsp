@@ -86,10 +86,22 @@ function exportWeaponQuery(){
 	});
 }
 
+function editWeaponItem(){
+	var flag = showEditDialog('#weapon_grid', '#weapon_form', '#weapon_dlg');
+	
+	if(flag){
+		$('#weapon_save').unbind('click');
+		$('#weapon_save').click(function(){
+			//console.log('haha');
+			saveItem('#weapon_grid', '#weapon_form', '#weapon_dlg', weaponTable);
+		});		
+	}
+}
 
 function addWeaponItem(){
 	showAddDialog('#weapon_form', '#weapon_dlg');
 	
+	$('#weapon_save').unbind('click');
 	$('#weapon_save').click(function(){
 		var actionContext = new Object();
 		actionContext.table = 'weapon';
@@ -149,7 +161,7 @@ function addWeaponItem(){
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="doSearchWeapon()">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="clearCriteria('#weapon_toolbar')">清除</a>
   		<a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="addWeaponItem()">添加</a> 
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit "onclick="showEditDialog('#weapon_grid', '#weapon_form', '#weapon_dlg')">编辑</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit "onclick="editWeaponItem()">编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="deleteItem('#weapon_grid', weaponTable, 'weaponId')">删除</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="exportWeaponQuery()">导出</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-excel" onclick="selectFile('#weapon_file')">导入</a>

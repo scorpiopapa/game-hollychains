@@ -30,7 +30,7 @@ public class WebController {
 	@RequestMapping(value="tabs/{table}")
 	@Audit
 	@SecurityCheck
-	public ModelAndView datagrid(@PathVariable("table") String table) throws Exception {
+	public ModelAndView tab(@PathVariable("table") String table) throws Exception {
 		ModelAndView mv = new ModelAndView("tabs/" + table);
 		return mv;
 	}
