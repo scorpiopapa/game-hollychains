@@ -346,7 +346,7 @@ function uploadFile(fileId, table, callback){
     });
 }
 
-function resetSelect(jselectId, data, valueName, textName, selectedValue){
+function resetSelect(jselectId, data, valueName, textName, selectedValue, formatter){
 	$(jselectId).empty();
 	
 	var count = data.record.total;
@@ -356,7 +356,12 @@ function resetSelect(jselectId, data, valueName, textName, selectedValue){
 		var value = eval('e.' + valueName);
 		var text = eval('e.' + textName);
 		
-		$(jselectId).append('<option value="'+ value + '">' + text + '</option>');
+		var displayText = text;
+		if(formatter && typeof(formatter) === "function"){
+			displayText = formatter(value, text);
+		}
+		
+		$(jselectId).append('<option value="'+ value + '">' + displayText + '</option>');
 	}	
 	
 	console.log('selected value ' + selectedValue);
@@ -364,7 +369,7 @@ function resetSelect(jselectId, data, valueName, textName, selectedValue){
 		$(jselectId).val(selectedValue);
 	}
 }
-
+/*
 function resetSelect2(jselectId, data, valueName, textName, selectedValue){
 	$(jselectId).empty();
 	
@@ -383,7 +388,7 @@ function resetSelect2(jselectId, data, valueName, textName, selectedValue){
 		$(jselectId).val(selectedValue);
 	}
 }
-
+*/
 function handleError(code){
 	if(code == 1003){
 		window.location.href = 'login.html';

@@ -91,7 +91,9 @@ function exportGashaConfigQuery(){
 function fillGashaCofnigSelect(){
 	$.get('search/distinct/weapon.json?field=weaponId&field=weaponName', function(data) {
 		if(data && data.code == 0){
-			resetSelect2('#gasha_weapon_id', data, 'weaponId', 'weaponName');
+			resetSelect('#gasha_weapon_id', data, 'weaponId', 'weaponName', null, function(value, text){
+				return value + ' - ' + text;
+			});
 		}
 	}).fail(function(data) {
 		// error occured
@@ -109,6 +111,7 @@ function addGashaCofnigItem(){
 
 	$('#gasha_weapon_id option:first').prop("selected", 'selected');
 
+	$('#gashaConfig_save').unbind('click');
 	$('#gashaConfig_save').click(function(){
 		var actionContext = new Object();
 		actionContext.table = 'GASHA_CONFIG';
@@ -131,7 +134,8 @@ function editGashaConfigItem(){
 	
 		$('#gasha_weapon_id').hide();
 		$('#gasha_weapon_id2').show();
-	
+		
+		$('#gashaConfig_save').unbind('click');
 		$('#gashaConfig_save').click(function(){
 			saveItem('#gashaConfig_grid', '#gashaConfig_form', '#gashaConfig_dlg', gashaConfigTable);
 		});

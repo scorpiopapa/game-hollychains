@@ -69,6 +69,9 @@ function refreshTreeMenu() {
 function addTreeMenuItem(){
 	showAddDialog('#treeMenu_form', '#treeMenu_dlg');
 	
+	fillParentIdSelect('add');
+	
+	$('#treeMenu_save').unbind('click');
 	$('#treeMenu_save').click(function(){
 		var actionContext;
 		
@@ -84,6 +87,28 @@ function addTreeMenuItem(){
 	});
 }
 
+function fillParentIdSelect(action){
+	$.get('search/distinct/' + treeMenuTable + '.json?field=id&field=text', function(data) {
+		if(data && data.code == 0){
+			resetSelect('#treeMenu_parentId_select', data, 'id', 'text', null, function(value, text){
+				return value + ' - ' + text;
+			});
+			
+			$('#treeMenu_parentId_select').append('<option value="0" select>无</option>');
+			
+			if(action == 'add'){
+				$('#treeMenu_parentId_select').val('0');
+				$('#treeMenu_parentId_input').val('0');
+			}else{
+				$('#treeMenu_parentId_select').val($('#treeMenu_parentId_input').val());
+			}
+		}
+	}).fail(function(data) {
+		// error occured
+		handleError(data.code);
+	});	
+}
+
 /**
  * 编辑
  */
@@ -91,38 +116,23 @@ function editTreeMenuItem(){
 	var flag = showEditDialog('#treeMenu_grid', '#treeMenu_form', '#treeMenu_dlg');
  
 	if(flag){
+		fillParentIdSelect();
+		/*
+		console.log($('#treeMenu_parentId_input').val());
+		
+		var selectedValue = parseInt($('#treeMenu_parentId_input').val());
+		console.log("set selected value to " + selectedValue);
+		
+		$('#treeMenu_parentId_select').val(4);
+		*/
+		$('#treeMenu_save').unbind('click');
 		$('#treeMenu_save').click(function(){
 			saveItem('#treeMenu_grid', '#treeMenu_form', '#treeMenu_dlg', treeMenuTable);
 		});
 	}
 }
-
-/**
- * 导出查询结果
- */
-function exportTreeMenuQuery(){
-	showConfirmMessage('是否导出查询结果？', function(r){
-		if(r){
-			var form = new Object();
-			// 每列以分号分隔
-			form.columns = 'id,id;url,url;text,text;parentId,parentId;order,order;status,status';	
-			form.table = treeMenuTable;
-			
-			var query = treeMenuQuery ? treeMenuQuery : getQueryJson();
-			form.query = JSON.stringify(query);
-			
-			// 表格显示的名称
-			form.tableDisplayName = 'TreeMenu';
-			form.fileName = 'treeMenu';
-			
-			form.type = 'csv';
-			
-			downloadFile(form);
-		}
-	});
-}
 </script>
-<table id="treeMenu_grid" style="width:700px;height:250px" data-options="toolbar:'#treeMenu_toolbar',url:'search/tree_menu.json?id=1'">
+<table id="treeMenu_grid" style="width:700px;height:250px" data-options="toolbar:'#treeMenu_toolbar'">
     <thead>
         <tr>
         <th data-options="field:'ck'" checkbox="true"></th>
@@ -159,7 +169,9 @@ function exportTreeMenuQuery(){
 		</div>
 		<div class="treeMenu_item">
 			<label>上级菜单ID</label>
-			<input id="treeMenu_parentId_input" name="parentId">
+			<input id="treeMenu_parentId_input" name="parentId" type="hidden">
+			<select id="treeMenu_parentId_select" onchange="$('#treeMenu_parentId_input').val(this.value);">
+			</select>
 		</div>
 		<div class="treeMenu_item">
 			<label>序号</label>
