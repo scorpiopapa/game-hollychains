@@ -98,5 +98,6 @@
 	</mvc:annotation-driven>
   
 	<import resource="db-context.xml"/>
+	<import resource="plugins-context.xml"/>
 </beans>
 

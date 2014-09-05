@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.joinway.admin.bean.domain.TreeMenu;
 
+@Deprecated
 @Service("ChainsAdminService")
 public class ChainsAdminService extends AdminService {
 
