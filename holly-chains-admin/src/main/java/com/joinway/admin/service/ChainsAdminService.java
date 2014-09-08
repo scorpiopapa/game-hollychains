@@ -8,7 +8,7 @@ import com.joinway.admin.bean.domain.TreeMenu;
 
 @Deprecated
 @Service("ChainsAdminService")
-public class ChainsAdminService extends AdminService {
+public class ChainsAdminService extends AdminPortalService {
 
 	@Override
 	protected List<TreeMenu> findTreeMenus(int userId) throws Exception {

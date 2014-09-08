@@ -18,7 +18,7 @@ import com.joinway.admin.bean.UserContext;
 import com.joinway.admin.bean.form.LoginForm;
 import com.joinway.admin.bean.form.RegisterForm;
 import com.joinway.admin.bean.view.LoginView;
-import com.joinway.admin.service.AdminService;
+import com.joinway.admin.service.AdminPortalService;
 import com.joinway.admin.utils.SessionHelper;
 import com.joinway.bean.logging.annotation.InputLog;
 import com.joinway.bean.logging.annotation.OutputLog;
@@ -37,7 +37,7 @@ public class AdminPortalController extends ExceptionController {
 
 	private final static Logger log = LoggerFactory.getLogger(AdminPortalController.class);
 	
-	@Autowired @Qualifier("ChainsAdminService") AdminService service;
+	@Autowired @Qualifier("ChainsAdminService") AdminPortalService service;
 	
 	@RequestMapping(value="login", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

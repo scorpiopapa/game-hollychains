@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.joinway.admin.bean.UserContext;
 import com.joinway.admin.bean.view.LoginView;
 import com.joinway.admin.bean.view.TreeMenuView;
-import com.joinway.admin.service.AdminService;
+import com.joinway.admin.service.AdminPortalService;
 import com.joinway.admin.utils.SessionHelper;
 import com.joinway.bean.exception.ValidationException;
 import com.joinway.bean.logging.annotation.InputLog;
@@ -39,7 +39,7 @@ public class AdminController extends ExceptionController {
 
 	private final static Logger log = LoggerFactory.getLogger(AdminController.class);
 	
-	@Autowired @Qualifier("AdminService") AdminService service;
+	@Autowired @Qualifier("AdminService") AdminPortalService service;
 	
 	@RequestMapping(value="login/context", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
