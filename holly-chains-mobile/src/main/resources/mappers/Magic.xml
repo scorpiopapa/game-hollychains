@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bt.chains.mapper.MagicMapper">
+	<!-- 添加用户新魔法 -->
+	<insert id="insertUserMagic" parameterType="com.bt.chains.bean.domain.UserMagic" >
+		INSERT INTO USER_MAGIC (USER_ID,MAGIC_ID,MAGIC_RANK) VALUES (#{userId},#{magicId},#{magicRank})
+	</insert>
+	<!-- 删除魔法 -->
+	<delete id="deleteMagic" parameterType="com.bt.chains.bean.domain.User">
+		DELETE FROM USER_MAGIC 
+		 WHERE USER_ID = #{userId}
+		   AND MAGIC_ID IN 
+		 <foreach collection="magicIds" index="index" item="magicId" open="(" separator="," close=")">
+		   #{magicId}
+		 </foreach>
+	</delete>
+	<!-- 更新用户金币 -->
+	<update id="updateUserGold" parameterType="com.bt.chains.bean.domain.User">
+		UPDATE USER
+		   SET MONEY = (MONEY + #{money})
+		 WHERE USER_ID = #{userId}
+	</update>
+	<!-- 更新魔法级别 -->
+	<update id="updateUserMagic" parameterType="com.bt.chains.bean.domain.UserMagic">
+		UPDATE USER_MAGIC
+		   SET MAGIC_RANK = #{magicRank}
+		   , IN_USE = #{inUse}
+		 WHERE USER_ID = #{userId}
+		   AND MAGIC_ID = #{magicId}
+	</update>
+	<!-- 查询魔法 -->
+	<select id="queryeMagic" resultType="com.bt.chains.bean.domain.UserMagic">
+		SELECT ID id,
+			   USER_ID userId,
+		       MAGIC_ID magicId,
+		       MAGIC_RANK magicRank,
+		       IN_USE	inUse
+		  FROM USER_MAGIC 
+		 WHERE USER_ID = #{userId}
+		<if test="magicId != null">
+			AND MAGIC_ID = #{magicId}
+		</if>
+		<if test="inUse != null">
+			AND IN_USE = #{inUse}
+		</if>
+	</select>
+	
+	<select id="queryAllMagic" resultType="com.bt.chains.bean.domain.UserMagic">
+		SELECT USER_ID userId,
+		       MAGIC_ID magicId,
+		       MAGIC_RANK magicRank
+		  FROM USER_MAGIC 
+		 WHERE USER_ID = #{userId}
+	</select>
+	
+	<select id="selectMagicUpgradeConfig" resultType="com.bt.chains.bean.domain.MagicUpgradeConfig">
+		SELECT
+			MAGIC_RANK	rank
+			, MONEY	money
+			, SPECIAL_MONEY	specialMoney
+		FROM MAGIC_UPGRADE_CONFIG
+		WHERE MAGIC_RANK = #{rank}
+	</select>
+	
+	<update id="resetUserMagicInUseStatus">
+		UPDATE USER_MAGIC SET IN_USE = #{status}
+	</update>
+</mapper>

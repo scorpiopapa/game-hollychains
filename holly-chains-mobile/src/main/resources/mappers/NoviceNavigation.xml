@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bt.chains.mapper.NoviceNavigationMapper">
+	<!-- 查询所有导航信息 -->
+	<select id="queryNoviceNavigations" resultType="com.bt.chains.bean.domain.NoviceNavigation" parameterType="java.lang.Integer">
+		SELECT USER_ID userId,
+		       NAVIGATION_ID navigationId,
+		       CREATE_DATE createDate
+		  FROM USER_NAVIGATION
+		 WHERE USER_ID = #{userId}
+	</select>
+	<!-- 查询当前导航信息 -->
+	<select id="queryCurNoviceNavigation" resultType="com.bt.chains.bean.domain.NoviceNavigation" parameterType="java.lang.Integer">
+		SELECT USER_ID userId,
+		       NAVIGATION_ID navigationId
+		  FROM USER_NAVIGATION
+		 WHERE USER_ID = #{userId}
+		 ORDER BY NAVIGATION_ID DESC
+		 LIMIT 1
+	</select>
+	<!-- 插入导航信息 -->
+	<insert id="insertNavigation" parameterType="com.bt.chains.bean.domain.NoviceNavigation">
+		INSERT INTO USER_NAVIGATION 
+			(USER_ID, NAVIGATION_ID, CREATE_DATE) 
+			VALUES 
+			(#{userId}, #{navigationId}, NOW())
+	</insert>
+</mapper>

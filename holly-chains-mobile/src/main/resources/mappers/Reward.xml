@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bt.chains.mapper.RewardMapper">
+	<!-- 查询成就信息 -->
+	<select id="getAchivementListDetail" resultType="com.bt.chains.bean.domain.UserAchievement" parameterType="java.lang.Integer">
+		SELECT rh.ID id, rh.USER_ID userId, rh.REWARD_ID rewardId, rh.TYPE type, 
+				rh.STATUS status,rh.CREATE_DATE createDate, rh.UPDATE_DATE updateDate,
+				rm.NAME name, rm.DESCRIPTION description, rc.CATEGORY category, 
+				rc.MONEY money, rc.SPECIAL_MONEY specialMoney,rc.WEAPON weapon, 
+				wp.WEAPON_NAME weaponName, rc.WEAPON_COUNT weaponCount, rc.OTHERS others 
+			FROM USER_ACHIEVEMENT_HIS rh
+			LEFT JOIN REWARD_MASTER rm ON rh.TYPE=rm.TYPE
+			LEFT JOIN REWARD_CONFIG rc ON rh.REWARD_ID=rc.ID AND rh.TYPE=rc.REWARD_TYPE
+			LEFT JOIN WEAPON wp ON rc.WEAPON=wp.WEAPON_ID
+		WHERE rh.USER_ID=#{userId}
+	</select>
+	<!-- 获取成就种类 -->
+	<select id="getRewardMaster" resultType="com.bt.chains.bean.domain.RewardMaster">
+		SELECT TYPE type, NAME name, DESCRIPTION description, REWARD_ORDER rewardOrder FROM REWARD_MASTER
+	</select>
+	
+	<!-- 查询成就配置信息 -->
+	<select id="getRewardConfig" resultType="com.bt.chains.bean.domain.RewardConfig">
+		SELECT rc.ID id, 
+			CASE WHEN rc.REWARD_TYPE=3 THEN CONCAT('',(SELECT SCENE_ID FROM SCENE_CONFIG WHERE SCENE_ID=rc.CATEGORY), '')
+			WHEN 	rc.REWARD_TYPE=4 THEN CONCAT('',(SELECT SCENE_ID FROM ELITE_SCENE_CONFIG WHERE SCENE_ID=rc.CATEGORY), '')
+			WHEN 	rc.REWARD_TYPE=5 THEN CONCAT('',(SELECT SCENE_ID FROM HERO_SCENE_CONFIG WHERE SCENE_ID=rc.CATEGORY), '')
+			ELSE rc.CATEGORY END category, 
+			rc.MONEY money, rc.SPECIAL_MONEY specialMoney,
+			rc.REWARD_TYPE rewardType, rc.WEAPON weapon, wp.WEAPON_NAME weaponName, rc.WEAPON_COUNT weaponCount, 
+			rc.PROP prop, pr.PROP_NAME propName, rc.PROP_COUNT propCount, rc.OTHERS others 
+		FROM REWARD_CONFIG rc
+		LEFT JOIN WEAPON wp ON rc.WEAPON=wp.WEAPON_ID
+		LEFT JOIN PROP pr ON pr.PROP_ID=rc.PROP
+	</select>
+	
+	<!-- 获取成就列表 -->
+	<select id="userAchievementHistoryList" resultType="com.bt.chains.bean.domain.UserAchievementHistory">
+	SELECT hi.ID id, hi.USER_ID userId, hi.REWARD_ID rewardId, hi.COMP_STATUS compStatus, hi.STATUS status, 
+		hi.TYPE type, hi.CREATE_DATE createDate, hi.UPDATE_DATE updateDate
+		FROM USER_ACHIEVEMENT_HIS hi WHERE ID IN(SELECT ID FROM
+			(SELECT MIN(REWARD_ID),ID FROM USER_ACHIEVEMENT_HIS WHERE 1=1 
+			AND USER_ID=#{userId} AND STATUS='N' GROUP BY TYPE)t) ORDER BY COMP_STATUS DESC, TYPE
+	</select>
+	
+	<!-- 查询当日成就 数量-->
+	<select id="selectCurrentAchievements" resultType="int">
+		SELECT COUNT(*)
+          FROM USER_ACHIEVEMENT_HIS T
+         WHERE T.STATUS = 'N'
+           AND T.COMP_STATUS = 'Y'
+           AND T.TYPE = 1
+           AND TIMESTAMPDIFF(DAY, T.CREATE_DATE, NOW()) = 0
+           AND T.USER_ID=#{userId}
+	</select>
+	
+	<!-- 查询其他成就数量 -->
+	<select id="selectOtherAchievements" resultType="int">
+		SELECT COUNT(*)
+          FROM USER_ACHIEVEMENT_HIS T
+         WHERE T.STATUS = 'N'
+           AND T.COMP_STATUS = 'Y'
+           AND T.TYPE != 1
+           AND T.USER_ID=#{userId}
+	</select>
+	
+	<!-- 获取成就信息 -->
+	<select id="selectUserAchievementHistory" resultType="com.bt.chains.bean.domain.UserAchievementHistory" parameterType="com.bt.chains.bean.domain.UserAchievementHistory">
+		SELECT hi.ID id, hi.USER_ID userId, hi.REWARD_ID rewardId, hi.COMP_STATUS compStatus, hi.STATUS status, 
+		hi.TYPE type, hi.CREATE_DATE createDate, hi.UPDATE_DATE updateDate
+		FROM USER_ACHIEVEMENT_HIS hi WHERE 1=1 
+		<if test="userId != 0">
+			AND hi.USER_ID = #{userId} 
+		</if>
+		<if test="id != 0">
+			AND hi.ID = #{id} 
+		</if>
+		<if test="rewardId != 0">
+			AND hi.REWARD_ID = #{rewardId} 
+		</if>
+	</select>
+	
+	<!-- 插入用户成就 -->
+	<insert id="inserUserRewardHis" parameterType="com.bt.chains.bean.domain.UserRewardHis">
+		INSERT INTO 
+			USER_REWARD_HIS(
+				USER_ID
+				, ACH_ID
+				, SOURCE
+				, MONEY
+				, SPECIAL_MONEY
+				, REWARD_DATE
+			)VALUES(
+				#{userId}
+				, #{achId}
+				, #{source}
+				, #{money}
+				, #{specialMoney}
+				, #{rewardDate}
+			)
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<!-- 获取成就信息 -->
+	<select id="selectRewardStatus" resultType="com.bt.chains.bean.domain.UserRewardStatus" parameterType="java.lang.Integer">
+		SELECT USER_ID userId, MONEY_SUM moneySum, SPECIAL_MONEY_SUM specialMoneySum 
+		FROM USER_REWARD_STATUS
+		WHERE USER_ID=#{userId}
+	</select>
+	
+	<!-- 插入用户成就状态信息 -->
+	<insert id="insertRewardStatus" parameterType="com.bt.chains.bean.domain.UserRewardStatus">
+		INSERT INTO 
+			USER_REWARD_STATUS(
+				USER_ID
+				, PVE_SUM
+				, PVE_COUNT
+				, LAST_PVE_DATE
+				, MONEY_SUM
+				, SPECIAL_MONEY_SUM
+				,CHANLENGE_SUM
+			)VALUES(
+				#{userId}
+				, #{pveSum}
+				, #{pveCount}
+				, #{lastPveDate}
+				, #{moneySum}
+				, #{specialMoneySum}
+				, #{chanlengeSum}
+			)
+	</insert>
+	
+	<update id="updateRewardStatus" parameterType="com.bt.chains.bean.domain.UserRewardStatus">
+		UPDATE USER_REWARD_STATUS
+		   SET 
+		  	<if test="pveSum != 0">
+			PVE_SUM = #{pveSum},
+			</if>
+		   <if test="pveCount != 0">
+			PVE_COUNT = #{pveCount},
+			</if>
+			<if test="lastPveDate != null">
+			LAST_PVE_DATE = #{lastPveDate},
+			</if>
+			<if test="moneySum != 0">
+			MONEY_SUM = #{moneySum},
+			</if>
+			<if test="specialMoneySum != 0">
+			SPECIAL_MONEY_SUM = #{specialMoneySum},
+			</if>
+			<if test="chanlengeSum != 0">
+			CHANLENGE_SUM = #{chanlengeSum},
+			</if>
+			USER_ID = #{userId}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 获取当前用户属于可以获取哪个奖励 -->
+	<select id="queryUserReward" resultType="com.bt.chains.bean.domain.RewardConfig" >
+		SELECT T.ID id,
+			   T.CATEGORY category,
+			   T.MONEY money,
+			   T.SPECIAL_MONEY specialMoney,
+			   T.REWARD_TYPE rewardType,
+			   T.WEAPON weapon,
+			   T.WEAPON_COUNT weaponCount,
+			   T.PROP prop,
+			   T.PROP_COUNT propCount
+		  FROM REWARD_CONFIG T 
+		 WHERE T.CATEGORY >= #{category} 
+		   AND T.REWARD_TYPE = #{rewardType} 
+	     ORDER BY T.CATEGORY 
+	     LIMIT 1;
+	</select>
+	<!-- 根据类型获取奖励 -->
+	<!-- 获取成就种类 -->
+	<select id="getRewardMasterByType" resultType="com.bt.chains.bean.domain.RewardMaster">
+		SELECT TYPE type, NAME name, DESCRIPTION description, REWARD_ORDER rewardOrder FROM REWARD_MASTER WHERE TYPE = #{type}
+	</select>
+	<!-- 获取奖励配置信息 -->
+	<select id="getRewardConfigById" resultType="com.bt.chains.bean.domain.RewardConfig">
+		SELECT T.ID id,
+			   T.CATEGORY category,
+			   T.MONEY money,
+			   T.SPECIAL_MONEY specialMoney,
+			   T.REWARD_TYPE rewardType,
+			   T.WEAPON weapon,
+			   T.WEAPON_COUNT weaponCount,
+			   T.PROP prop,
+			   T.PROP_COUNT propCount
+		  FROM REWARD_CONFIG T
+		 WHERE T.ID = #{id}
+	</select>
+	
+	<!-- 查询其他成就数量 -->
+	<select id="queryCurrMonthLoginSum" resultType="int">
+		SELECT COUNT(1) FROM USER_ACHIEVEMENT_HIS WHERE 
+		USER_ID=#{userId} 
+		AND TYPE=#{type} 
+		AND CREATE_DATE BETWEEN #{minMonthDate} and #{nextMinMonthDate} 
+	</select>
+	
+</mapper>

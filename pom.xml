@@ -6,6 +6,7 @@
   <packaging>pom</packaging>
   <modules>
   		<module>holly-chains-admin</module>
+  		<module>holly-chains-mobile</module>
   		<module>holly-chains-common</module>
   </modules>
 

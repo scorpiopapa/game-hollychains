@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bt.chains.mapper.UserMapper">
+	<resultMap id="UserMap" type="com.bt.chains.bean.domain.User">
+		<result column="USER_ID" property="userId"/>
+		<result column="BIND_USER_ID" property="bindUserId"/>
+		<result column="NAME" property="name"/>
+		<result column="MARKET" property="market"/>
+		<result column="MARKET_ID" property="marketId"/>
+		<result column="STATUS" property="status"/>
+		<result column="MONEY" property="money"/>
+		<result column="SPECIAL_MONEY" property="specialMoney"/>
+ 		<result column="LAST_CONNECTED_TIME" property="lastConnectedTime"/>
+		<result column="LOGIN_TIME" property="loginTime"/>
+		<!-- 体力 -->
+		<result column="POWER" property="power"/>
+	</resultMap>
+	
+	<resultMap id="UserAchievementHistory" type="com.bt.chains.bean.domain.UserAchievementHistory">
+		<result column="SID" property="id"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="REWARD_ID" property="rewardId"/>
+		<result column="TYPE" property="type"/>
+		<result column="STATUS" property="status"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="UPDATE_DATE" property="updateDate"/>
+	</resultMap>
+	
+	<select id="selectUserByMarket" resultMap="UserMap" >
+		SELECT * FROM USER
+			WHERE STATUS = 'Y'
+				AND UCASE(MARKET_ID) = UCASE(#{marketId})
+	</select>
+	
+	<update id="updateUser" parameterType="com.bt.chains.bean.domain.User">
+		UPDATE USER
+		   SET MONEY = #{money}, 
+			   SPECIAL_MONEY = #{specialMoney}, 
+			   LOGIN_TIME = #{loginTime}, 
+			   LAST_CONNECTED_TIME = #{lastConnectedTime},
+			   NAME = #{name}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<select id="selectLoginUser" resultType="com.bt.chains.bean.domain.User">
+		SELECT T.USER_ID userId, 
+		       T.MONEY money, 
+		       T.SPECIAL_MONEY specialMoney, 
+		       T.NAME name
+		  FROM USER T
+		 WHERE USER_ID = #{userId} 
+		<if test="status == null">
+			AND STATUS = 'Y'
+		</if>
+		<if test="status != null">
+			AND STATUS = #{status}
+		</if>		
+	</select>
+	
+	<insert id="insertUser" parameterType="com.bt.chains.bean.domain.User">
+		INSERT INTO
+			USER(NAME, STATUS, MONEY, SPECIAL_MONEY, LAST_CONNECTED_TIME, REGISTER_TIME, POWER, MARKET_ID, MARKET) 
+			VALUES
+			(#{name}, #{status}, #{money,jdbcType=INTEGER}, #{specialMoney,jdbcType=INTEGER}, #{lastConnectedTime,jdbcType=TIMESTAMP}, 
+			#{registerTime,jdbcType=TIMESTAMP}, #{power,jdbcType=INTEGER}, #{marketId}, #{market})
+		<selectKey keyProperty="userId" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertUserReward" parameterType="com.bt.chains.bean.domain.UserReward">
+		INSERT INTO
+			USER_REWARD_STATUS(
+				USER_ID
+				, PVE_SUM
+				, PVE_COUNT
+				, LAST_PVE_DATE
+				, MONEY_SUM
+				, SPECIAL_MONEY_SUM
+			)VALUES(
+				#{userId}
+				, #{pveSum}
+				, #{pveCount}
+				, #{lastPveDate,jdbcType=TIMESTAMP}
+				, #{moneySum}
+				, #{specialMoneySum}
+			)
+	</insert>
+	<!-- 查询职业IDS -->
+	<select id="selectJobs" resultType="com.bt.chains.bean.domain.UserRole" parameterType="java.lang.Integer">
+		SELECT T.USER_ID userId,
+			   T.ROLE_ID roleId,
+			   T.ROLE_RANK roleRank,
+			   T.IS_NEW_ROLE isNewRole
+		  FROM USER_ROLE T
+		 WHERE 1=1
+		 <if test="userId != null">
+		 	AND T.USER_ID = #{userId}
+		 </if>
+	</select>
+		<!-- 查询职业IDS -->
+	<select id="selectAllJobs" resultType="com.bt.chains.bean.domain.Role">
+		SELECT T.JOB_ID jobId,
+			   T.JOB_NAME jobName,
+			   T.UNLOCK_CHECKPOINTS unblockCheckpoints
+		  FROM ROLE T
+	</select>
+			<!-- 查询所有武器 -->
+	<select id="selectAllWeapons" resultType="com.bt.chains.bean.domain.Weapon" parameterType="java.lang.Integer">
+		SELECT T.WEAPON_ID weaponId,
+			   T.WEAPON_NAME weaponName,
+			   T.WID wid
+		  FROM WEAPON T
+		  WHERE 1 = 1
+		 <if test="weaponRare != null">
+		 	AND T.WEAPON_RARE = #{weaponRare}
+		 </if>
+	</select>
+				<!-- 查询所有武器 -->
+	<select id="selectAllMagics" resultType="com.bt.chains.bean.domain.Magic">
+		SELECT T.MAGIC_ID magicId,
+			   T.MAGIC_NAME magicName
+		  FROM MAGIC T
+	</select>
+	<!-- 查询武器IDS -->
+	<select id="selectWeapons" resultType="com.bt.chains.bean.domain.UserWeapon" parameterType="java.lang.Integer">
+		SELECT T.ID id,
+			   T.USER_ID userId,
+			   (SELECT W.WID FROM WEAPON W WHERE W.WEAPON_ID = T.WEAPON_ID) wId,
+			   T.WEAPON_ID weaponId,
+			   T.WEAPON_RANK weaponRank,
+			   T.BAG_STATUS bagStatus,
+			   T.IN_USE inUse,
+			   T.POINT point
+		  FROM USER_WEAPON T
+		 WHERE 1 = 1
+		 <if test="userId != null">
+		 	AND T.USER_ID = #{userId}
+		 </if>
+		 <if test="id != null">
+		 	AND T.ID = #{id}
+		 </if>
+		 ORDER BY WID DESC
+	</select>
+	<!-- 查询魔法IDS -->
+	<select id="selectMagics" resultType="com.bt.chains.bean.domain.UserMagic" parameterType="java.lang.Integer">
+		SELECT T.USER_ID userId,
+			   T.MAGIC_ID magicId,
+			   T.MAGIC_RANK magicRank
+		  FROM USER_MAGIC T
+		 WHERE T.USER_ID = #{userId}
+	</select>
+	
+	<!-- 获取用户最后一次使用的职业 -->
+<!-- 	<select id="selectLastUseRole" resultType="com.bt.chains.bean.domain.UserRole" parameterType="java.lang.Integer">
+		SELECT T.USER_ID userId,
+			   T.ID roleId,
+			   T.RANK roleRank,
+			   T.IS_NEW_ROLE isNewRole
+		  FROM USER_LAST_RECORDS T
+		 WHERE T.USER_ID = #{userId}
+		   AND T.TYPE = 0
+	</select> -->
+	<!-- 获取用户最后一次使用的武器 -->
+<!-- 	<select id="selectLastUseWeapons" resultType="com.bt.chains.bean.domain.UserWeapon" parameterType="java.lang.Integer">
+		SELECT T.USER_ID userId,
+			   T.ID id,
+			   T.RANK weaponRank
+		  FROM USER_LAST_RECORDS T
+		 WHERE T.USER_ID = #{userId}
+		   AND T.TYPE = 1
+	</select> -->
+	<!-- 获取用户最后一次使用的魔法 -->
+<!-- 	<select id="selectLastUseMagics" resultType="com.bt.chains.bean.domain.UserMagic" parameterType="java.lang.Integer">
+		SELECT T.USER_ID userId,
+			   T.ID magicId,
+			   T.RANK magicRank
+		  FROM USER_LAST_RECORDS T
+		 WHERE T.USER_ID = #{userId}
+		   AND T.TYPE = 2
+	</select> -->
+	<!-- 插入用户默认职业 -->
+	<insert id="insertUserRole" parameterType="com.bt.chains.bean.domain.UserRole">
+		INSERT INTO USER_ROLE (USER_ID,ROLE_ID,ROLE_RANK,IN_USE) VALUES (#{userId},#{roleId},#{roleRank},#{inUse})
+	</insert>
+	<!-- 删除用户信息 -->
+<!-- 	<delete id="deteleUserRecord" parameterType="java.lang.Integer">
+		DELETE FROM USER_LAST_RECORDS 
+		 WHERE USER_ID = #{userId}
+		 <if test="type != null">
+		 	AND TYPE = #{type}
+		 </if>
+	</delete> -->
+	<!-- 插入用户存盘信息 -->
+<!-- 	<insert id="insertUserLastRecords" parameterType="com.bt.chains.bean.domain.UserLastRecords">
+		INSERT INTO	USER_LAST_RECORDS(USER_ID, ID, TYPE, OPTIME, RANK) VALUES (
+				#{userId}, #{id}, #{type}, NOW(), #{rank})
+	</insert> -->
+	
+	<!-- 修改用银币数 -->
+	<update id="updateUserMoney" parameterType="com.bt.chains.bean.domain.User">
+		UPDATE USER
+		   SET MONEY = (MONEY - #{money})
+		 WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 修改用户宝石数 -->
+	<update id="updateUserSpecialMoney" parameterType="com.bt.chains.bean.domain.User">
+		UPDATE USER
+		   SET SPECIAL_MONEY = (SPECIAL_MONEY - #{specialMoney})
+		 WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 获取成就信息 -->
+	<select id="selectUserAchievementHistory" resultType="com.bt.chains.bean.domain.UserAchievementHistory">
+		SELECT hi.ID id, hi.USER_ID userId, hi.REWARD_ID rewardId, hi.COMP_STATUS compStatus, hi.STATUS status, 
+		hi.TYPE type, hi.CREATE_DATE createDate, hi.UPDATE_DATE updateDate
+		FROM USER_ACHIEVEMENT_HIS hi WHERE 1=1 
+		<if test="userId != 0">
+			AND hi.USER_ID = #{userId} 
+		</if>
+		<if test="type != null">
+			AND hi.TYPE = #{type} 
+		</if>
+		<if test="rewardId != null">
+			AND hi.REWARD_ID = #{rewardId} 
+		</if>
+	</select>
+	
+	<!-- 插入用户成就 -->
+	<insert id="insertUserAchievementHistory" parameterType="com.bt.chains.bean.domain.UserAchievementHistory">
+		INSERT INTO 
+			USER_ACHIEVEMENT_HIS(
+				USER_ID
+				, REWARD_ID
+				, COMP_STATUS
+				, STATUS
+				, TYPE
+				, CREATE_DATE
+				, UPDATE_DATE
+			)VALUES(
+				#{userId}
+				, #{rewardId}
+				, #{compStatus}
+				, #{status}
+				, #{type}
+				, #{createDate}
+				, #{updateDate}
+			)
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<update id="updateUserAchievementHistory" parameterType="com.bt.chains.bean.domain.UserAchievementHistory">
+		UPDATE USER_ACHIEVEMENT_HIS
+			<if test="status != null">
+			SET STATUS = #{status},
+			</if>
+			<if test="compStatus != null">
+			COMP_STATUS = #{compStatus}
+			</if>
+			<if test="rewardId !=0">
+			, REWARD_ID = #{rewardId}
+			</if>
+			<if test="updateDate != null">
+			, UPDATE_DATE = #{updateDate}
+			</if>
+		WHERE ID = #{id}
+	</update>
+	<!-- 插入用户道具 -->
+	<insert id="insertUserProp" parameterType="com.bt.chains.bean.domain.UserProp">
+		INSERT INTO USER_PROP (USER_ID, PROP_ID, PROP_TYPE, PROP_NUM, OP_TIME) 
+						VALUES 
+						 	  (#{userId}, #{propId}, #{propType}, #{propNum}, NOW())
+	</insert>
+	<!-- 修改用户道具 -->
+	<update id="updateUserProp" parameterType="com.bt.chains.bean.domain.UserProp">
+		UPDATE USER_PROP
+		   SET PROP_NUM = PROP_NUM + #{propNum},
+		       OP_TIME = NOW()
+		 WHERE USER_ID = #{userId}
+		   AND PROP_ID = #{propId}
+		   <if test="propType != null">
+		   		AND PROP_TYPE = #{propType}
+		   </if>
+	</update>
+	<!-- 插入用户购买道具历史 -->
+	<insert id="insertPropBuyHis" parameterType="com.bt.chains.bean.domain.PropBuyHis">
+		INSERT INTO USER_PROP_BUY_HIS (USER_ID, PROP_ID, SPECIAL_MONEY, CREATE_TIME) 
+						VALUES 
+						 	  (#{userId}, #{propId}, #{specialMoney}, NOW())
+	</insert>
+	
+	<!-- 查询道具数量 -->
+	<select id="queryUserPropNum" resultType="java.lang.Integer" >
+		SELECT PROP_NUM
+		  FROM USER_PROP T
+		 WHERE USER_ID = #{userId}
+		   AND PROP_TYPE = #{propType}
+	</select>
+	
+	<!-- 查询用户所有道具信息 -->
+	<select id="queryUserProps" resultType="com.bt.chains.bean.domain.UserProp" parameterType="java.lang.Integer">
+		SELECT T.USER_ID userId,
+			   T.PROP_ID propId,
+			   T.PROP_TYPE propType,
+			   T.PROP_NUM propNum,
+			   T.OP_TIME opTime
+		  FROM USER_PROP T
+		 WHERE USER_ID = #{userId}
+	</select>
+	<!-- 查询用户指定的道具信息 -->
+	<select id="queryUserProp" resultType="com.bt.chains.bean.domain.UserProp">
+		SELECT T.USER_ID userId,
+			   T.PROP_ID propId,
+			   T.PROP_TYPE propType,
+			   T.PROP_NUM propNum,
+			   T.OP_TIME opTime
+		  FROM USER_PROP T
+		 WHERE USER_ID = #{userId}
+		   AND PROP_ID = #{propId}
+	</select>
+	<!-- 查询用户指定的道具数量 -->
+	<select id="queryUserPropCount" resultType="java.lang.Integer" parameterType="com.bt.chains.bean.domain.UserProp">
+		SELECT COUNT(1)
+		  FROM USER_PROP T
+		 WHERE USER_ID = #{userId}
+		   AND PROP_TYPE = #{propType}
+	</select>
+	<!-- 查询用户购买历史 -->
+	<select id="queryPropBuyHis" resultType="com.bt.chains.bean.domain.PropBuyHis" parameterType="java.lang.Integer">
+		SELECT T.ID id,
+			   T.USER_ID userId,
+			   T.PROP_ID propId,
+			   T.SPECIAL_MONEY specialMoney,
+			   T.CREATE_DATE createDate
+		  FROM USER_PROP_BUY_HIS T
+		 WHERE USER_ID = #{userId}
+	</select>
+	<!-- 查询用户信息 -->
+	<select id="queryUserByUserId" resultMap="UserMap" parameterType="java.lang.Integer">
+		SELECT * FROM USER
+		 WHERE USER_ID = #{userId} AND STATUS = 'Y'
+	</select>
+	<!-- 用户消耗体力数 -->
+	<update id="depletePower" parameterType="com.bt.chains.bean.domain.User" >
+		UPDATE USER
+		   SET POWER = (POWER - #{power})
+		 WHERE USER_ID = #{userId}
+	</update>
+	<!-- 用户增加体力数 -->
+	<update id="addPower" parameterType="com.bt.chains.bean.domain.User" >
+		UPDATE USER
+		   SET POWER = (POWER + #{power})
+		 WHERE USER_ID = #{userId}
+	</update>
+	<!-- 查询用户积分最低信息 -->
+	<select id="queryUserMinScore" resultType="com.bt.chains.bean.domain.UserScore">
+		SELECT ID id,
+			   USER_ID userId,
+			   SCORE score,
+			   TYPE type,
+			   ROLE_ID roleId,
+			   USER_NAME userName
+		  FROM USER_SCORE
+		 WHERE USER_ID = #{userId}
+		   AND type = #{type}
+		 ORDER BY SCORE ASC
+		 LIMIT 1
+	</select>
+	<!-- 查询用户积分信息 -->
+	<select id="queryUserScore" resultType="com.bt.chains.bean.domain.UserScore">
+		SELECT ID id,
+			   USER_ID userId,
+			   SCORE score,
+			   TYPE type,
+			   ROLE_ID roleId,
+			   USER_NAME userName
+		  FROM USER_SCORE
+		 WHERE type = #{type}
+		 <if test="userId != null">
+		 	AND USER_ID = #{userId}
+		 </if>
+		 ORDER BY SCORE DESC
+		 LIMIT 10
+	</select>
+	<!-- 查询全服用户积分信息 -->
+	<select id="queryAllUserScore" resultType="com.bt.chains.bean.domain.UserScore">
+		SELECT ID id,
+			   USER_ID userId,
+			   SCORE score,
+			   TYPE type,
+			   ROLE_ID roleId,
+			   USER_NAME userName
+		  FROM USER_SCORE
+		 WHERE type = #{type}
+		 ORDER BY SCORE DESC
+		 LIMIT #{start},#{end}
+	</select>
+	
+	<select id="selectUserScoreCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM USER_SCORE WHERE type = #{type}
+	</select>
+	
+	<!-- 查询用户积分数量 -->
+	<select id="queryUserScoreCount" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		  FROM USER_SCORE
+		 WHERE USER_ID = #{userId}
+		   AND type = #{type}
+	</select>
+	<!-- 保存用户积分 -->
+	<insert id="saveUserScore" parameterType="com.bt.chains.bean.domain.UserScore">
+		INSERT INTO USER_SCORE 
+					(USER_ID,SCORE,TYPE,ROLE_ID,USER_NAME)
+				VALUES
+					(#{userId},#{score},#{type},#{roleId},#{userName})
+	</insert>
+	<!-- 修改用户积分 -->
+	<update id="updateUserScore" parameterType="com.bt.chains.bean.domain.UserScore">
+		UPDATE USER_SCORE
+		   SET SCORE = #{score},
+		       ROLE_ID = #{roleId}
+		 WHERE USER_ID = #{userId}
+		   AND TYPE = #{type}
+		   AND ID = #{id}
+	</update>
+	<!-- 查询当前模式所有玩家数量 -->
+	<select id="queryAllUserCount" resultType="java.lang.Integer" >
+		SELECT COUNT(1) 
+		  FROM USER_SCORE
+		 WHERE TYPE = #{type}
+	</select>
+	<!-- 查询当前用户的名次 -->
+	<select id="queryUserRankings" resultType="java.lang.Integer" >
+	<!-- 
+		SELECT COUNT(1) 
+		  FROM USER_SCORE
+		 WHERE SCORE >= (SELECT SCORE 
+		                   FROM USER_SCORE
+		                  WHERE TYPE = #{type}
+		                    AND USER_ID = #{userId})
+		                     -->
+		SELECT COUNT(1) 
+		  FROM USER_SCORE
+		 WHERE SCORE >= #{score}
+		   AND TYPE = #{type}             
+	</select>
+	<!-- 增加用户的银币数量 -->
+	<update id="addUserMoney" parameterType="com.bt.chains.bean.domain.User">
+		UPDATE USER
+		   SET MONEY = (MONEY + #{money})
+		 WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 增加用户道具数量 -->
+	<update id="updateUserPropNum" parameterType="com.bt.chains.bean.domain.UserProp">
+		UPDATE USER_PROP
+		   SET PROP_NUM = (PROP_NUM + #{propNum})
+		 WHERE USER_ID = #{userId}
+		   AND PROP_ID = #{propId}
+	</update>
+	
+	<!-- 插入用户市场信息 -->
+<!-- 	<insert id="insertUserMarket" parameterType="com.bt.chains.bean.domain.UserMarket">
+		INSERT INTO USER_MARKET (USER_ID, MARKET_ID, MARKET, CREATE_DATE)
+							VALUES
+								(#{userId}, #{marketId}, #{market}, #{createDate})
+	</insert> -->
+	
+	<!-- 查询用户未过期的切换码 -->
+	<select id="selectUserAuth" resultType="com.bt.chains.bean.domain.UserAuth">
+		SELECT T.SID sId,
+		       T.USER_ID userId,
+		       T.CODE code,
+		       T.EXPIRED expired,
+		       T.CREATE_DATE createDate,
+		       T.UPDATE_DATE updateDate
+		  FROM USER_AUTH T
+		 WHERE T.EXPIRED = 'N'
+		   AND T.USER_ID = #{userId}
+	</select>
+	<!-- 插入切换码 -->
+	<insert id="insertUserAuth" parameterType="com.bt.chains.bean.domain.UserAuth" >
+		INSERT INTO USER_AUTH (USER_ID, CODE, EXPIRED, CREATE_DATE) 
+							VALUES
+							  (#{userId}, #{code}, #{expired}, #{createDate})
+	</insert>
+	<!-- 修改切换码 -->
+	<update id="updateUserAuth" parameterType="com.bt.chains.bean.domain.UserAuth">
+		UPDATE USER_AUTH
+		   SET EXPIRED = #{expired},
+		   	   UPDATE_DATE = #{updateDate},
+		   	   BIND_USER_ID = #{bindUserId}
+		 WHERE SID = #{sId}
+	</update>
+	
+<!-- 	<insert id="insertUserAuthMarket" parameterType="com.bt.chains.bean.domain.UserAuthMarket">
+		INSERT INTO USER_AUTH_MARKET (USER_ID, MARKET_ID, MARKET)
+								VALUES
+									(#{userId}, #{marketId}, #{market})
+	</insert> -->
+	<!-- 更新用户状态 -->
+	<update id="updateUserStatus" parameterType="com.bt.chains.bean.domain.User">
+		UPDATE USER
+		   SET STATUS = #{status}
+		   		, BIND_USER_ID = #{bindUserId}
+		 WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 查询用户 -->
+	<select id="selectUser" resultMap="UserMap" >
+		SELECT * FROM USER WHERE USER_ID = #{id}
+	</select>
+	
+	<!-- 查询用户道具 -->
+	<select id="queryUserPropByType" resultType="com.bt.chains.bean.domain.UserProp" >
+		SELECT T.USER_ID userId,
+			   T.PROP_ID propId,
+			   T.PROP_TYPE propType,
+			   T.PROP_NUM propNum,
+			   T.OP_TIME opTime
+		  FROM USER_PROP T
+		 WHERE USER_ID = #{userId}
+		   AND PROP_TYPE = #{propType}
+	</select>
+	
+	<!-- 修改用户名称 -->
+	<update id="updateUserName" >
+		UPDATE USER
+		   SET NAME = #{userName}
+		 WHERE USER_ID = #{userId}
+	</update>
+	
+	<select id="selectUserWeaponUpgradeParams" resultType="com.bt.chains.bean.domain.UserWeaponUpgradeParam">
+		SELECT LEVEL	level
+			, BENCHMARK_POINTS	benchmarkPoint
+			, CONVERT_POINT	convertPoint
+		FROM USER_WEAPON_UPGRADE_PARAM
+	</select>
+	
+	<!-- 查询道具ID最小的信息 -->
+	<select id="selectProp" resultType="com.bt.chains.bean.domain.Prop" >
+		SELECT PROP_ID propId,
+			   PROP_TYPE propType,
+			   PROP_NAME propName,
+			   PROP_PRICE propPrice,
+			   PROP_DESCRIPTION propDescription,
+			   PROP_NUM propNum
+		  FROM PROP
+		 WHERE PROP_TYPE = #{propType}
+		 ORDER BY PROP_ID ASC 
+		 LIMIT 1
+	</select>
+	
+	<!-- 查询道具 -->
+	<select id="selectNextProp" resultType="com.bt.chains.bean.domain.Prop">
+		SELECT PROP_ID propId,
+			   PROP_TYPE propType,
+			   PROP_NAME propName,
+			   PROP_PRICE propPrice,
+			   PROP_DESCRIPTION propDescription,
+			   PROP_NUM propNum
+		  FROM PROP
+		 WHERE PROP_TYPE = #{propType}
+		   AND PROP_ID > #{propId}
+		 ORDER BY PROP_ID ASC
+		 LIMIT 1
+	</select>
+	
+	<!-- 根据ID查询道具 -->
+	<select id="selectPropById" resultType="com.bt.chains.bean.domain.Prop">
+		SELECT PROP_ID propId,
+			   PROP_TYPE propType,
+			   PROP_NAME propName,
+			   PROP_PRICE propPrice,
+			   PROP_DESCRIPTION propDescription,
+			   PROP_NUM propNum
+		  FROM PROP
+		 WHERE PROP_ID = #{propId}
+	</select>
+	
+	<!-- 更具productId查询宝石 -->
+	<select id="selectGem" resultType="com.bt.chains.bean.domain.ProductConfig" >
+		SELECT PRODUCT_ID productId,
+			   GEM_NUMBER gemNumber
+		  FROM PRODUCT_CONFIG
+		 WHERE PRODUCT_ID = #{productId}
+	</select>
+	
+	<!-- 增加宝石数量 -->
+	<update id="updateAddGem" >
+		UPDATE USER
+		   SET SPECIAL_MONEY = (SPECIAL_MONEY + #{specialMoney})
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 查询背包或武器仓库数量 -->
+	<select id="selectStoreCount" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		  FROM USER_WEAPON
+		 WHERE USER_ID = #{userId}
+		   AND BAG_STATUS = #{bagStatus}
+	</select>
+	
+	<!-- 查询正在使用的武器 -->
+	<select id="selectInUseWeapon" resultType="com.bt.chains.bean.domain.UserWeapon">
+		SELECT WEAPON_ID weaponId,
+			   WEAPON_RANK weaponRank
+		  FROM USER_WEAPON
+		 WHERE USER_ID = #{userId}
+		   AND IN_USE = #{inUse}
+	</select>
+	
+	<!-- 更新用户道具 -->
+	<update id="updateUProp" parameterType="com.bt.chains.bean.domain.UserProp">
+		UPDATE USER_PROP
+		   SET PROP_NUM = PROP_NUM + #{propNum},
+		       PROP_ID = #{propId},
+		       OP_TIME = NOW()
+		 WHERE USER_ID = #{userId}
+		   AND PROP_TYPE = #{propType}
+	</update>
+	
+	<update id="updateBindUserStatus">
+		UPDATE USER SET STATUS = 'N' WHERE BIND_USER_ID = #{id}
+	</update>
+</mapper>

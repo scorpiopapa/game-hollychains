@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- <conversionRule conversionWord="logger" converterClass="com.lee.LoggingConverter" /> -->
+	
+	<property scope="context" name="log.prefix" value="chains" />
+	<!-- <property scope="context" name="log.suffix" value="" /> -->
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d %-5level %logger{80} - %msg %n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.bt" level="debug" />
+
+
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+<!-- 		<appender-ref ref="EMAIL" />
+		<appender-ref ref="ERROR" /> -->
+	</root>
+</configuration>

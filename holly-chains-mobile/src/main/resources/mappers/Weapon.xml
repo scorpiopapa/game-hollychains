@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bt.chains.mapper.WeaponMapper">
+	<!-- 删除武器 -->
+	<delete id="deleteWeapon" parameterType="com.bt.chains.bean.domain.User">
+		DELETE FROM USER_WEAPON 
+		 WHERE USER_ID = #{userId}
+		  AND ID IN 
+		  <foreach collection="weaponIds" index="index" item="id" open="(" separator="," close=")">
+		   	#{id}
+		 </foreach>
+	</delete>
+	<!-- 更新用户武器级别 -->
+	<update id="updateUserWeapon" parameterType="com.bt.chains.bean.domain.UserWeapon">
+		UPDATE USER_WEAPON
+		   SET WEAPON_RANK = #{weaponRank}
+		   , POINT = #{point}
+		   , IN_USE = #{inUse}
+		 WHERE USER_ID = #{userId}
+		   AND ID = #{id} 
+	</update>
+	<!-- 更新用户金币 -->
+	<update id="updateUserGold" parameterType="com.bt.chains.bean.domain.User">
+		UPDATE USER
+		   SET MONEY = (MONEY + #{money})
+		 WHERE USER_ID = #{userId}
+	</update>
+	<!-- 更新用户背包中的武器 -->
+	<update id="updateUserBagWeapon" parameterType="com.bt.chains.bean.domain.User">
+		UPDATE USER_WEAPON 
+		   SET BAG_STATUS = 1
+		 WHERE USER_ID = #{userId}
+		   AND ID IN 
+		 <foreach collection="weaponIds" index="index" item="id" open="(" separator="," close=")">
+		   #{id}
+		 </foreach>
+	</update>
+	<!-- 添加用户武器 -->
+	<insert id="insertUserWeapon" parameterType="com.bt.chains.bean.domain.UserWeapon" >
+		INSERT INTO USER_WEAPON (USER_ID,WEAPON_ID,WEAPON_RANK,BAG_STATUS) VALUES (#{userId},#{weaponId},#{weaponRank},#{bagStatus})
+	</insert>
+	<!-- 查询用户武器 -->
+	<select id="queryWeapon" resultType="com.bt.chains.bean.domain.UserWeapon">
+		SELECT T.ID id,
+			   T.USER_ID userId,
+			   T.WEAPON_ID weaponId,
+			   T.WEAPON_RANK weaponRank,
+			   T.IN_USE inUse,
+			   W.WID wId
+		  FROM USER_WEAPON T
+		  	LEFT JOIN WEAPON W ON T.WEAPON_ID = W.WEAPON_ID 
+		 WHERE 1 = 1	
+		<if test="id != null">
+			AND T.ID = #{id}
+		</if> 
+		<if test="userId != null">
+			AND T.USER_ID = #{userId}
+		</if>
+		<if test="inUse != null">
+			AND IN_USE = #{inUse}
+		</if>
+	</select>
+	<!-- 查询武器WIDs -->
+	<select id="queryWeaponWIDs" resultType="com.bt.chains.bean.domain.Param" >
+		SELECT WID id
+		  FROM WEAPON
+		 WHERE 1 = 1
+		 <if test="weaponIds != null">
+		  	 AND WEAPON_ID IN 
+			 <foreach collection="weaponIds" index="index" item="obj" open="(" separator="," close=")">
+			   	#{obj.weaponId}
+			 </foreach>
+		 </if>
+	</select>
+	
+	<!-- 查询武器WID -->
+	<select id="queryWeaponWID" resultType="java.lang.Integer" >
+		SELECT WID id
+		  FROM WEAPON
+		 WHERE WEAPON_ID = #{weaponId}
+	</select>
+	
+	<update id="resetUserWeaponInUseStatus">
+		UPDATE USER_WEAPON SET IN_USE = #{status} WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 查询贩卖武器总金额 -->
+	<select id="selectSellTotal" resultType="java.lang.Integer">
+		SELECT SUM(SELL_PRICE)
+		  FROM WEAPON 
+		 WHERE WID IN 
+		  <foreach collection="wids" index="index" item="wid" open="(" separator="," close=")">
+		   	#{wid}
+		 </foreach>
+	</select>
+	
+	<!-- 查询武器个数 -->
+	<select id="queryWeaponCount" resultType="java.lang.Integer" >
+		SELECT COUNT(1)
+		  FROM USER_WEAPON
+		 WHERE WEAPON_ID = #{weaponId}
+		   AND USER_ID = #{userId}
+	</select>
+	
+	<!-- 查询武器基础信息 -->
+	<select id="queryWeaponBaseData" resultType="com.bt.chains.bean.domain.Weapon" >
+		SELECT WID wid,
+			   WEAPON_ID weaponId,
+			   WEAPON_NAME weaponName,
+			   BASE_EXPERIENCE baseExperience,
+			   SELL_PRICE sellPrice,
+			   MAX_BLOOD maxBlood,
+			   MIN_BLOOD minBlood,
+			   MAX_BLOOD_REPLY maxBloodReply,
+			   MIN_BLOOD_REPLY minBloodReply,
+			   MAX_BASE_ATTACK maxBaseAttack,
+			   MIN_BASE_ATTACK minBaseAttack,
+			   MAX_ATTACK maxAttack,
+			   MIN_ATTACK minAttack,
+			   MAX_SHIELD maxShield,
+			   MIN_SHIELD minShield,
+			   MAX_DEFENSE_SHIELD maxDefenseShield,
+			   MIN_DEFENSE_SHIELD minDefenseShield,
+			   MAX_VAMPIRE maxVampire,
+			   MIN_VAMPIRE minVampore,
+			   MAX_CRIT_RATE maxCritRate,
+			   MIN_CRIT_RATE minCritRate,
+			   MAX_PENETRATION_RATE maxPenetrationRate,
+			   MIN_PENETRATION_RATE minPenetrationRate
+		  FROM WEAPON
+		 WHERE 1 = 1
+		 	<if test="weaponId != null">
+		 		AND WEAPON_ID = #{weaponId}
+		 	</if>
+		 	<if test="weaponIds != null">
+		 		AND WEAPON_ID IN 
+				 <foreach collection="weaponIds" index="index" item="weaponId" open="(" separator="," close=")">
+				   	#{weaponId}
+				 </foreach>
+		 	</if>
+		 	<if test="wid != null">
+		 		AND WID = #{wid}
+		 	</if>
+	</select>
+	
+	<!-- 查询武器WIDs -->
+	<select id="queryUserWeaponWids" resultType="com.bt.chains.bean.domain.Param" >
+		SELECT T.WID id
+		  FROM WEAPON T 
+ 	 LEFT JOIN USER_WEAPON UW 
+ 	   ON T.WEAPON_ID = UW.WEAPON_ID
+ 	WHERE UW.USER_ID = #{userId}
+		<if test="ids != null">
+	 		AND UW.ID IN 
+			 <foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+			   	#{id}
+			 </foreach>
+	 	</if>
+	</select>
+	
+	<!-- 查询武器价格-->
+	<select id="selectWeaponSellPrice" resultType="java.lang.Integer">
+		SELECT SELL_PRICE sellPrice
+		  FROM WEAPON 
+		 WHERE 1 = 1
+		 <if test="wid != null">
+		 	AND WID = #{wid}
+		 </if>
+		 <if test="weaponId != null">
+		 	AND WEAPON_ID = #{weaponId}
+		 </if>
+	</select>
+</mapper>

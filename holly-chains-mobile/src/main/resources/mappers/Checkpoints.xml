@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bt.chains.mapper.CheckpointsMapper">
+	<!-- 查询关卡信息 -->
+	<select id="queryCheckpoints" resultType="com.bt.chains.bean.domain.OrdinaryCheckPoints" parameterType="java.lang.Integer">
+		SELECT T.SCENE_ID sceneId,
+			   T.BIG_STAGE bigStage,
+			   T.SMALL_STAGE smallStage,
+			   T.POWER power,
+			   T.BOSS_ROUND bossRound,
+			   T.BOSS_FEQ_FACTOR bossFeqFactor,
+			   T.BOSS_MIN_ROUND bossMinRound,
+			   T.MONSTER_RATE monsterRate,
+			   T.COIN_RATE coinRate,
+			   T.POTION_RATE potionRate,
+			   T.SHEILD_RATE sheildRate,
+			   T.SWORD_RATE swordRate,
+			   T.BOW_RATE bowRate,
+			   T.MONSTER1_ID monster1Id,
+			   T.MONSTER1_RATE monster1Rate,
+			   T.MONSTER2_ID monster2Id,
+			   T.MONSTER2_RATE monster2Rate,
+			   T.MONSTER3_ID monster3Id,
+			   T.MONSTER3_RATE monster3Rate,
+			   T.REWARD_COIN rewardCoin,
+			   T.REWARD_WEAPON1 rewardWeapon1,
+			   T.REWARD_WEAPON2 rewardWeapon2,
+			   T.REWARD_WEAPON3 rewardWeapon3,
+			   T.REWARD_WEAPON4 rewardWeapon4,
+			   T.REWARD_WEAPON4_RATE rewardWeapon4Rate,
+			   T.VICTORY_CONDITIONS_COIN victoryConditionsCoin,
+			   T.VICTORY_CONDITIONS_ROUND victoryConditionsRound,
+			   T.SMALL_MONSTER_NUM smallMonsterNum,
+			   T.VICTORY_CONDITIONS_SCORE victoryConditionsScore,
+			   T.VICTORY_CONDITIONS_BOSS1 DIV 1000 victoryConditionsBoss1,
+			   T.VICTORY_CONDITIONS_BOSS1_NUM victoryConditionsBoss1Num,
+			   T.VICTORY_CONDITIONS_BOSS2 DIV 1000 victoryConditionsBoss2,
+			   T.VICTORY_CONDITIONS_BOSS2_NUM victoryConditionsBoss2Num,
+			   T.VICTORY_CONDITIONS_BOSS3 DIV 1000 victoryConditionsBoss3,
+			   T.VICTORY_CONDITIONS_BOSS3_NUM victoryConditionsBoss3Num,
+			   T.BOSS1_ID boss1Id,
+			   T.BOSS1_RATE boss1Rate,
+			   T.BOSS2_ID boss2Id,
+			   T.BOSS2_RATE boss2Rate,
+			   T.BOSS3_ID boss3Id,
+			   T.BOSS3_RATE boss3Rate,
+			   T.BOSS4_ID boss4Id,
+			   T.BOSS4_RATE boss4Rate,
+			   T.BOSS5_ID boss5Id,
+			   T.BOSS5_RATE boss5Rate,
+			   T.BOSS6_ID boss6Id,
+			   T.BOSS6_RATE boss6Rate,
+			   T.BOSS7_ID boss7Id,
+			   T.BOSS7_RATE boss7Rate,
+			   T.BOSS8_ID boss8Id,
+			   T.BOSS8_RATE boss8Rate,
+			   T.STATUS status
+		  FROM SCENE_CONFIG T
+		 WHERE T.SCENE_ID = #{sceneId}
+	</select>
+	<!-- 查询BOSS信息 -->
+	<select id="queryBoss" resultType="com.bt.chains.bean.domain.Boss" parameterType="java.lang.Integer">
+		SELECT T.BOSS_ID bossId,
+			   T.BOSS_SKILL bossSkill,
+			   T.D bossD,
+			   T.E bossE,
+			   T.F bossF,
+			   T.G bossG,
+			   T.H bossH,
+			   T.I bossI,
+			   T.BOSS_RATE bossRate
+		  FROM BOSS_CONFIG T
+		 WHERE T.BOSS_ID = #{bossId}
+	</select>
+	<!-- 查询怪兽信息 -->
+	<select id="queryMonster" resultType="com.bt.chains.bean.domain.Monster" parameterType="java.lang.Integer">
+		SELECT T.MONSTER_ID monsterId,
+			   T.D monsterD,
+			   T.E monsterE,
+			   T.F monsterF,
+			   T.G monsterG,
+			   T.H monsterH,
+			   T.I monsterI,
+			   T.REMARK remark
+		  FROM MONSTER_CONFIG T
+		 WHERE T.MONSTER_ID = #{monsterId}
+	</select>
+	<!-- 查询精英关卡信息 -->
+	<select id="queryEliteCheckpoints" resultType="com.bt.chains.bean.domain.EliteCheckPoints" parameterType="java.lang.Integer">
+		SELECT T.SCENE_ID sceneId,
+			   T.BIG_STAGE bigStage,
+			   T.SMALL_STAGE smallStage,
+			   T.POWER power,
+			   T.BOSS_ROUND bossRound,
+			   T.BOSS_FEQ_FACTOR bossFeqFactor,
+			   T.BOSS_MIN_ROUND bossMinRound,
+			   T.MONSTER_RATE monsterRate,
+			   T.COIN_RATE coinRate,
+			   T.POTION_RATE potionRate,
+			   T.SHEILD_RATE sheildRate,
+			   T.SWORD_RATE swordRate,
+			   T.BOW_RATE bowRate,
+			   T.MONSTER1 monster1Id,
+			   T.MONSTER1_RATE monster1Rate,
+			   T.MONSTER2 monster2Id,
+			   T.MONSTER2_RATE monster2Rate,
+			   T.MONSTER3 monster3Id,
+			   T.MONSTER3_RATE monster3Rate,
+			   T.REWARD_COIN rewardCoin,
+			   T.REWARD_WEAPON1 rewardWeapon1Id,
+			   T.REWARD_WEAPON2 rewardWeapon2Id,
+			   T.REWARD_WEAPON3 rewardWeapon3Id,
+			   T.REWARD_WEAPON4 rewardWeapon4Id,
+			   T.REWARD_WEAPON4_RATE rewardWeapon4Rate,
+			   T.VICTORY_CONDITIONS_COIN victoryConditionsCoin,
+			   T.VICTORY_CONDITIONS_ROUND victoryConditionsRound,
+			   T.SMALL_MONSTER_NUM smallMonsterNum,
+			   T.VICTORY_CONDITIONS_SCORE victoryConditionsScore,
+			   T.VICTORY_CONDITIONS_BOSS1 DIV 1000 victoryConditionsBoss1,
+			   T.VICTORY_CONDITIONS_BOSS1_NUM victoryConditionsBoss1Num,
+			   T.VICTORY_CONDITIONS_BOSS2 DIV 1000 victoryConditionsBoss2,
+			   T.VICTORY_CONDITIONS_BOSS2_NUM victoryConditionsBoss2Num,
+			   T.VICTORY_CONDITIONS_BOSS3 DIV 1000 victoryConditionsBoss3,
+			   T.VICTORY_CONDITIONS_BOSS3_NUM victoryConditionsBoss3Num,
+			   T.BOSS1 boss1Id,
+			   T.BOSS1_RATE boss1Rate,
+			   T.BOSS2 boss2Id,
+			   T.BOSS2_RATE boss2Rate,
+			   T.BOSS3 boss3Id,
+			   T.BOSS3_RATE boss3Rate,
+			   T.BOSS4 boss4Id,
+			   T.BOSS4_RATE boss4Rate,
+			   T.BOSS5 boss5Id,
+			   T.BOSS5_RATE boss5Rate,
+			   T.BOSS6 boss6Id,
+			   T.BOSS6_RATE boss6Rate,
+			   T.BOSS7 boss7Id,
+			   T.BOSS7_RATE boss7Rate,
+			   T.BOSS8 boss8Id,
+			   T.BOSS8_RATE boss8Rate,
+			   T.STATUS status
+		  FROM ELITE_SCENE_CONFIG T
+		 WHERE T.SCENE_ID = #{sceneId}
+	</select>
+	<!-- 查询英雄关卡信息 -->
+	<select id="queryHeroCheckpoints" resultType="com.bt.chains.bean.domain.HeroCheckPoints" parameterType="java.lang.Integer">
+		 SELECT T.SCENE_ID sceneId,
+			   T.BIG_STAGE bigStage,
+			   T.SMALL_STAGE smallStage,
+			   T.POWER power,
+			   T.BOSS_ROUND bossRound,
+			   T.BOSS_FEQ_FACTOR bossFeqFactor,
+			   T.BOSS_MIN_ROUND bossMinRound,
+			   T.MONSTER_RATE monsterRate,
+			   T.COIN_RATE coinRate,
+			   T.POTION_RATE potionRate,
+			   T.SHEILD_RATE sheildRate,
+			   T.SWORD_RATE swordRate,
+			   T.BOW_RATE bowRate,
+			   T.MONSTER1 monster1Id,
+			   T.MONSTER1_RATE monster1Rate,
+			   T.MONSTER2 monster2Id,
+			   T.MONSTER2_RATE monster2Rate,
+			   T.MONSTER3 monster3Id,
+			   T.MONSTER3_RATE monster3Rate,
+			   T.REWARD_COIN rewardCoin,
+			   T.REWARD_WEAPON1 rewardWeapon1Id,
+			   T.REWARD_WEAPON2 rewardWeapon2Id,
+			   T.REWARD_WEAPON3 rewardWeapon3Id,
+			   T.REWARD_WEAPON4 rewardWeapon4Id,
+			   T.REWARD_WEAPON4_RATE rewardWeapon4Rate,
+			   T.VICTORY_CONDITIONS_COIN victoryConditionsCoin,
+			   T.VICTORY_CONDITIONS_ROUND victoryConditionsRound,
+			   T.SMALL_MONSTER_NUM smallMonsterNum,
+			   T.VICTORY_CONDITIONS_SCORE victoryConditionsScore,
+			   T.VICTORY_CONDITIONS_BOSS1 DIV 1000 victoryConditionsBoss1,
+			   T.VICTORY_CONDITIONS_BOSS1_NUM victoryConditionsBoss1Num,
+			   T.VICTORY_CONDITIONS_BOSS2 DIV 1000 victoryConditionsBoss2,
+			   T.VICTORY_CONDITIONS_BOSS2_NUM victoryConditionsBoss2Num,
+			   T.VICTORY_CONDITIONS_BOSS3 DIV 1000 victoryConditionsBoss3,
+			   T.VICTORY_CONDITIONS_BOSS3_NUM victoryConditionsBoss3Num,
+			   T.BOSS1 boss1Id,
+			   T.BOSS1_RATE boss1Rate,
+			   T.BOSS2 boss2Id,
+			   T.BOSS2_RATE boss2Rate,
+			   T.BOSS3 boss3Id,
+			   T.BOSS3_RATE boss3Rate,
+			   T.BOSS4 boss4Id,
+			   T.BOSS4_RATE boss4Rate,
+			   T.BOSS5 boss5Id,
+			   T.BOSS5_RATE boss5Rate,
+			   T.BOSS6 boss6Id,
+			   T.BOSS6_RATE boss6Rate,
+			   T.BOSS7 boss7Id,
+			   T.BOSS7_RATE boss7Rate,
+			   T.BOSS8 boss8Id,
+			   T.BOSS8_RATE boss8Rate,
+			   T.STATUS status
+		  FROM HERO_SCENE_CONFIG T
+		 WHERE T.SCENE_ID = #{sceneId}
+	</select>
+	<!-- 查询活动关卡信息 -->
+	<select id="queryActivityCheckpoints" resultType="com.bt.chains.bean.domain.ActivityCheckPoints" parameterType="java.lang.Integer">
+		SELECT T.SCENE_ID sceneId,
+			   T.BIG_STAGE bigStage,
+			   T.SMALL_STAGE smallStage,
+			   T.POWER power,
+			   T.BOSS_ROUND bossRound,
+			   T.BOSS_FEQ_FACTOR bossFeqFactor,
+			   T.BOSS_MIN_ROUND bossMinRound,
+			   T.MONSTER_RATE monsterRate,
+			   T.COIN_RATE coinRate,
+			   T.POTION_RATE potionRate,
+			   T.SHEILD_RATE sheildRate,
+			   T.SWORD_RATE swordRate,
+			   T.BOW_RATE bowRate,
+			   T.MONSTER1 monster1Id,
+			   T.MONSTER1_RATE monster1Rate,
+			   T.MONSTER2 monster2Id,
+			   T.MONSTER2_RATE monster2Rate,
+			   T.MONSTER3 monster3Id,
+			   T.MONSTER3_RATE monster3Rate,
+			   T.REWARD_COIN rewardCoin,
+			   T.REWARD_WEAPON1 rewardWeapon1Id,
+			   T.REWARD_WEAPON2 rewardWeapon2Id,
+			   T.REWARD_WEAPON3 rewardWeapon3Id,
+			   T.REWARD_WEAPON4 rewardWeapon4Id,
+			   T.REWARD_WEAPON4_RATE rewardWeapon4Rate,
+			   T.BOSS1 boss1Id,
+			   T.BOSS1_RATE boss1Rate,
+			   T.BOSS2 boss2Id,
+			   T.BOSS2_RATE boss2Rate,
+			   T.BOSS3 boss3Id,
+			   T.BOSS3_RATE boss3Rate,
+			   T.BOSS4 boss4Id,
+			   T.BOSS4_RATE boss4Rate,
+			   T.BOSS5 boss5Id,
+			   T.BOSS5_RATE boss5Rate,
+			   T.STATUS status
+		  FROM ACTIVITY_SCENE_CONFIG T
+		 WHERE T.SCENE_ID = #{sceneId}
+	</select>
+	<!-- 查询无限关卡信息 -->
+	<select id="queryLimitLessCheckpoints" resultType="com.bt.chains.bean.domain.LimitLessCheckPoints" parameterType="java.lang.Integer">
+		 SELECT T.SCENE_ID sceneId,
+			   T.BOSS_ROUND bossRound,
+			   T.BOSS_FEQ_FACTOR bossFeqFactor,
+			   T.BOSS_MIN_ROUND bossMinRound,
+			   T.MONSTER_RATE monsterRate,
+			   T.COIN_RATE coinRate,
+			   T.POTION_RATE potionRate,
+			   T.SHEILD_RATE sheildRate,
+			   T.SWORD_RATE swordRate,
+			   T.BOW_RATE bowRate,
+			   T.MONSTER1 monster1Id,
+			   T.MONSTER1_RATE monster1Rate,
+			   T.MONSTER2 monster2Id,
+			   T.MONSTER2_RATE monster2Rate,
+			   T.MONSTER3 monster3Id,
+			   T.MONSTER3_RATE monster3Rate,
+			   T.REWARD_COIN rewardCoin,
+			   T.REWARD_WEAPON1 rewardWeapon1Id,
+			   T.REWARD_WEAPON2 rewardWeapon2Id,
+			   T.REWARD_WEAPON3 rewardWeapon3Id,
+			   T.REWARD_WEAPON4 rewardWeapon4Id,
+			   T.REWARD_WEAPON4_RATE rewardWeapon4Rate,
+			   T.BOSS1 boss1Id,
+			   T.BOSS1_RATE boss1Rate,
+			   T.BOSS2 boss2Id,
+			   T.BOSS2_RATE boss2Rate,
+			   T.BOSS3 boss3Id,
+			   T.BOSS3_RATE boss3Rate,
+			   T.BOSS4 boss4Id,
+			   T.BOSS4_RATE boss4Rate,
+			   T.BOSS5 boss5Id,
+			   T.BOSS5_RATE boss5Rate,
+			   T.BOSS6 boss6Id,
+			   T.BOSS6_RATE boss6Rate,
+			   T.BOSS7 boss7Id,
+			   T.BOSS7_RATE boss7Rate,
+			   T.BOSS8 boss8Id,
+			   T.BOSS8_RATE boss8Rate,
+			   T.BOSS8 boss8Id,
+			   T.BOSS8_RATE boss8Rate,
+			   T.BOSS9 boss9Id,
+			   T.BOSS9_RATE boss8Rate,
+			   T.BOSS10 boss10Id,
+			   T.BOSS10_RATE boss10Rate,
+			   T.BOSS11 boss11Id,
+			   T.BOSS11_RATE boss11Rate,
+			   T.BOSS12 boss12Id,
+			   T.BOSS12_RATE boss12Rate,
+			   T.BOSS13 boss13Id,
+			   T.BOSS13_RATE boss13Rate,
+			   T.BOSS14 boss14Id,
+			   T.BOSS14_RATE boss14Rate,
+			   T.BOSS15 boss15Id,
+			   T.BOSS15_RATE boss15Rate,
+			   T.BOSS16 boss16Id,
+			   T.BOSS16_RATE boss16Rate,
+			   T.BOSS17 boss17Id,
+			   T.BOSS17_RATE boss17Rate,
+			   T.BOSS18 boss18Id,
+			   T.BOSS18_RATE boss18Rate,
+			   T.BOSS19 boss19Id,
+			   T.BOSS19_RATE boss19Rate,
+			   T.BOSS20 boss20Id,
+			   T.BOSS20_RATE boss20Rate,
+			   T.STATUS status
+		  FROM LIMITLESS_SCENE_CONFIG T
+		 WHERE T.SCENE_ID = #{sceneId}
+	</select>
+	
+	<!-- 扣除用户无限券 -->
+	<update id="deductionSecurities" parameterType="com.bt.chains.bean.domain.UserProp">
+		UPDATE USER_PROP
+		   SET PROP_NUM = (PROP_NUM - #{propNum})
+		 WHERE USER_ID = #{userId}
+		   AND PROP_TYPE = #{propType}
+	</update>
+	
+	<!-- 查询无限模式信息 -->
+	<select id="queryUnLimitedInfo" resultType="com.bt.chains.bean.domain.UnLimitedConfig" parameterType="java.lang.Integer">
+		SELECT ID id,
+		       NAME name,
+		       SPECIAL_MONEY specialMoney,
+		       UNLIMITED_SECURITIES_NUM unlimitedSecuritiesNum
+		  FROM UNLIMITED_CHECKPOINT_CONFIG
+		 WHERE ID = #{id}
+	</select>
+	<!-- 根据bossIds查询数据 -->
+	<select id="queryBossByIds" resultType="com.bt.chains.bean.domain.Boss" >
+		SELECT T.BOSS_ID bossId,
+			   T.BOSS_SKILL bossSkill,
+			   T.D bossD,
+			   T.E bossE,
+			   T.F bossF,
+			   T.G bossG,
+			   T.H bossH,
+			   T.I bossI,
+			   T.BOSS_RATE bossRate
+		  FROM BOSS_CONFIG T
+		 WHERE T.BOSS_ID IN 
+		  <foreach collection="bossIds" index="index" item="bossId" open="(" separator="," close=")">
+		   		#{bossId}
+		 </foreach>
+	</select>
+	<!-- 查询小怪信息 -->
+	<select id="queryMonsterByIds" resultType="com.bt.chains.bean.domain.Monster" >
+		SELECT T.MONSTER_ID monsterId,
+			   T.D monsterD,
+			   T.E monsterE,
+			   T.F monsterF,
+			   T.G monsterG,
+			   T.H monsterH,
+			   T.I monsterI,
+			   T.REMARK remark
+		  FROM MONSTER_CONFIG T
+		 WHERE T.MONSTER_ID IN
+		 <foreach collection="monsterIds" index="index" item="monsterId" open="(" separator="," close=")">
+		   		#{monsterId}
+		 </foreach>
+	</select>
+	
+	<!-- 查询大关卡信息 -->
+	<select id="queryBigStage" resultType="com.bt.chains.bean.domain.PlayStageInfoView" >
+		 <![CDATA[
+			  SELECT 
+			      distinct T.STAGE1 stage1Name,
+			       T.QUESTID div 100 stage1Id,
+			       T.SCENE_TYPE sceneType
+				  FROM PLAY_STAGE_INFO T
+				 WHERE T.SCENE_TYPE= #{sceneType} 
+				       and T.QUESTID  <=  #{currentStage}
+				 group by T.QUESTID
+				 order by T.QUESTID desc
+		]]>
+	</select>
+	
+	<!-- 查询小关卡信息 -->
+	<select id="querySmallStage" resultType="com.bt.chains.bean.domain.PlaySmallStageInfoView" >
+		<![CDATA[
+			SELECT T.QUESTID stage2Id,
+				   T.STAGE2 stage2Name,
+				   T.PLAYEDFLAG palyedFlag,
+				   T.STAMINA stamina
+			  FROM PLAY_STAGE_INFO T
+			 WHERE T.QUESTID DIV 100 = #{sceneId} and T.QUESTID <= #{currentStage}
+			 order by T.QUESTID desc
+		]]>
+	</select>
+	
+	<select id="getCurrentStage" resultType="String" parameterType="java.lang.Integer">
+	     SELECT T.CURRENT_STAGE
+		  FROM USER T 
+		 WHERE T.USER_ID = #{userId}
+    </select>
+    
+    <update id="updateRoleStatus" >
+         UPDATE USER_ROLE
+		   SET IS_NEW_ROLE = 1
+		 WHERE USER_ID = #{userId}
+		   AND ROLE_ID = #{roleId}
+    </update>
+    
+		<!-- 插入用户随机炼狱武器职业信息 -->
+	<insert id="insertUserHellAssignInfo" parameterType="com.bt.chains.bean.domain.UserHellAssignInfo">
+		INSERT INTO 
+			USER_HELL_ASSIGN_INFO(
+				USER_ID
+				, RANDOM_ROLE
+				, RANDOM_WEAPON
+				, RANDOM_MAGIC
+				, CREATE_DATE
+			)VALUES(
+				#{userId}
+				, #{randomRole}
+				, #{randomWeapon}
+				, #{randomMagic}
+				, #{createDate}
+			)
+	</insert>
+	
+		<!-- 查询用户的炼狱随机分配信息 -->
+	<select id="queryUserHellAssignInfo" resultType="com.bt.chains.bean.domain.UserHellAssignInfo" >
+		<![CDATA[
+			SELECT T.USER_ID userId,
+				   T.RANDOM_ROLE randomRole,
+				   T.RANDOM_WEAPON randomWeapon,
+				   T.RANDOM_MAGIC randomMagic,
+				   T.CREATE_DATE createDate
+			  FROM USER_HELL_ASSIGN_INFO T
+			 WHERE T.USER_ID = #{userId}
+			 order by T.CREATE_DATE desc
+		]]>
+	</select>
+	
+	<select id="selectUnlockConfig" resultType="com.bt.chains.bean.domain.UnlockConfig">
+		SELECT
+			SCENE_ID	sceneId,
+			ROLE_ID	roleId,
+			MAGIC_ID	magicId
+		FROM UNLOCK_CONFIG
+		WHERE SCENE_ID = #{sceneId}
+	</select>
+	
+	<!-- 更新用户金币 -->
+	<update id="updateUserGold">
+		UPDATE USER
+		   SET MONEY = (MONEY + #{money})
+		 WHERE USER_ID = #{userId}
+	</update>
+	
+	<select id="getRanking" resultType="com.bt.chains.bean.view.RankingView">
+		SELECT SID order,
+		       USER_ID name,
+		       ROLE_ID roleId,
+		       POINTS score
+		  FROM RANKING
+		  ORDER BY POINTS DESC
+	</select>
+	
+	<select id="getCustomRanking" resultType="com.bt.chains.bean.view.RankingView">
+		SELECT SID order,
+		       USER_ID name,
+		       ROLE_ID roleId,
+		       POINTS score
+		  FROM CUSTOM_RANKING
+		  ORDER BY POINTS DESC
+	</select>
+	
+	<select id="getRankingByuser" resultType="com.bt.chains.bean.view.RankingView" parameterType="java.lang.Integer">
+		SELECT SID order,
+		       USER_ID name,
+		       ROLE_ID roleId,
+		       POINTS score
+		  FROM RANKING
+		  WHERE USER_ID = #{userId} 
+		  ORDER BY POINTS DESC
+	</select>
+	
+	<select id="getCustomRankingByuser" resultType="com.bt.chains.bean.view.RankingView" parameterType="java.lang.Integer">
+		SELECT SID order,
+		       USER_ID name,
+		       ROLE_ID roleId,
+		       POINTS score
+		  FROM CUSTOM_RANKING
+		  WHERE USER_ID = #{userId} 
+		  ORDER BY POINTS DESC
+	</select>
+	
+	<select id="selectCheckpointReward" resultType="com.bt.chains.bean.domain.Checkpoint">
+		SELECT 
+			SCENE_ID sceneId
+			, REWARD_COIN rewardCoin
+			, REWARD_WEAPON1 rewardWeapon1
+			, REWARD_WEAPON2 rewardWeapon2
+			, REWARD_WEAPON3 rewardWeapon3
+			, REWARD_WEAPON4 rewardWeapon4 
+		FROM SCENE_CONFIG
+			WHERE SCENE_ID = #{sceneId}
+		UNION
+		SELECT 
+			SCENE_ID sceneId
+			, REWARD_COIN rewardCoin
+			, REWARD_WEAPON1 rewardWeapon1
+			, REWARD_WEAPON2 rewardWeapon2
+			, REWARD_WEAPON3 rewardWeapon3
+			, REWARD_WEAPON4 rewardWeapon4 
+		FROM ELITE_SCENE_CONFIG
+			WHERE SCENE_ID = #{sceneId}
+		UNION
+		SELECT 
+			SCENE_ID sceneId
+			, REWARD_COIN rewardCoin
+			, REWARD_WEAPON1 rewardWeapon1
+			, REWARD_WEAPON2 rewardWeapon2
+			, REWARD_WEAPON3 rewardWeapon3
+			, REWARD_WEAPON4 rewardWeapon4 
+		FROM HERO_SCENE_CONFIG
+			WHERE SCENE_ID = #{sceneId}
+		UNION
+		SELECT 
+			SCENE_ID sceneId
+			, REWARD_COIN rewardCoin
+			, REWARD_WEAPON1 rewardWeapon1
+			, REWARD_WEAPON2 rewardWeapon2
+			, REWARD_WEAPON3 rewardWeapon3
+			, REWARD_WEAPON4 rewardWeapon4 
+		FROM ACTIVITY_SCENE_CONFIG
+		WHERE SCENE_ID = #{sceneId}
+	</select>
+	
+	<select id="selectRankingPoints">
+		SELECT POINTS FROM RANKING ORDER BY POINTS DESC
+	</select>
+	
+	<select id="selectCustomRankingPoints">
+		SELECT POINTS FROM CUSTOM_RANKING ORDER BY POINTS DESC
+	</select>
+
+	<select id="selectRankingConfig" resultType="com.bt.chains.bean.domain.RankingRewardConfig">
+		SELECT 
+			PERCENT
+			, MONEY
+			, SPECIAL_MONEY	specialMoney
+			, WEAPON_ID	weaponId
+			, WEAPON_COUNT	weaponCount
+			, PROP_ID	propId
+			, PROP_COUNT	propCount
+			, PROP_TYPE	propType
+		FROM RANKING_REWARD_CONFIG
+			ORDER BY PERCENT DESC
+	</select>
+	
+	<select id="selectCustomRankingConfig" resultType="com.bt.chains.bean.domain.RankingRewardConfig">
+		SELECT 
+			PERCENT
+			, MONEY
+			, SPECIAL_MONEY	specialMoney
+			, WEAPON_ID	weaponId
+			, WEAPON_COUNT	weaponCount
+			, PROP_ID	propId
+			, PROP_COUNT	propCount
+			, PROP_TYPE	propType
+		FROM CUSTOM_RANKING_REWARD_CONFIG
+			ORDER BY PERCENT DESC
+	</select>
+	
+	<insert id="insertRanking" parameterType="com.bt.chains.bean.domain.Ranking">
+		INSERT INTO 
+			RANKING(
+				USER_ID
+				, ROLE_ID
+				, POINTS
+			)VALUES(
+				#{userId}
+				, #{roleId}
+				, #{points}
+			)
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertCustomRanking" parameterType="com.bt.chains.bean.domain.Ranking">
+		INSERT INTO 
+			CUSTOM_RANKING(
+				USER_ID
+				, ROLE_ID
+				, POINTS
+			)VALUES(
+				#{userId}
+				, #{roleId}
+				, #{points}
+			)
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			select LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<!-- 查询用户进入无限模式，选择的职业 -->
+	<select id="queryCheckpointRole" resultType="com.bt.chains.bean.domain.CheckpointRole">
+		SELECT USER_ID userId,
+		       TYPE type,
+		       ROLE_ID roleId
+		  FROM USER_CHECKPOINT_ROLE
+		 WHERE USER_ID = #{userId}
+		 	<if test="type != null">
+		 		AND TYPE = #{type}
+		 	</if>
+	</select>
+	<!-- 更新用户进入无限模式，选择的职业 -->
+	<update id="updateCheckpointRole" parameterType="com.bt.chains.bean.domain.CheckpointRole">
+		UPDATE USER_CHECKPOINT_ROLE
+		   SET ROLE_ID = #{roleId}
+		 WHERE USER_ID = #{userId}
+		   AND TYPE = #{type}
+	</update>
+	<!-- 插入用户进入无限模式，选择的职业 -->
+	<insert id="insertCheckpointRole" parameterType="com.bt.chains.bean.domain.CheckpointRole">
+		INSERT INTO USER_CHECKPOINT_ROLE(USER_ID, TYPE, ROLE_ID) VALUES (#{userId}, #{type}, #{roleId})
+	</insert>
+	
+	<!-- 用户通关插入通关信息 -->
+	<insert id="insertFinishCheckpointInfo"  parameterType="com.bt.chains.bean.domain.UserFinishedCheckpoint" >
+		INSERT INTO USER_FINISHED_CHECKPOINT
+			(USER_ID, CHECKPOINT_ID)
+		  VALUES
+		  	(#{userId}, #{checkpointId})
+	</insert>
+	<!-- 查询用户通关记录 -->
+	<select id="selectFinishCheckpointInfo" resultType="com.bt.chains.bean.domain.UserFinishedCheckpoint" >
+		SELECT ID id,
+			   USER_ID userId,
+			   CHECKPOINT_ID checkpointId
+		  FROM USER_FINISHED_CHECKPOINT
+		 WHERE 1 = 1
+		 <if test="userId != null">
+		 	AND USER_ID = #{userId}
+		 </if>
+		 <if test="sceneId != null">
+		 	AND CHECKPOINT_ID = #{sceneId}
+		 </if>
+	</select>
+	<!-- 普通关卡 -->
+	<select id="selectCheckpintList" resultType="com.bt.chains.bean.domain.UserFinishedCheckpoint">
+		SELECT T1.SCENE_ID checkpointId,
+			   T1.BIG_STAGE bigStage,
+			   T1.SMALL_STAGE smallStage,
+			   T1.POWER power
+		  FROM SCENE_CONFIG T1, USER_FINISHED_CHECKPOINT T2
+		 WHERE T1.SCENE_ID = T2.CHECKPOINT_ID 
+		 	AND SUBSTR(CHECKPOINT_ID, 2, 1) = 0
+		 	AND T2.USER_ID = #{userId}
+	  ORDER BY T1.SCENE_ID
+	</select>
+	<!-- 精英关卡 -->
+	<select id="selectEliteCheckpintList" resultType="com.bt.chains.bean.domain.UserFinishedCheckpoint">
+		SELECT T1.SCENE_ID checkpointId,
+			   T1.BIG_STAGE bigStage,
+			   T1.SMALL_STAGE smallStage,
+			   T1.POWER power
+		  FROM ELITE_SCENE_CONFIG T1, USER_FINISHED_CHECKPOINT T2
+		 WHERE T1.SCENE_ID = T2.CHECKPOINT_ID 
+		 	AND SUBSTR(CHECKPOINT_ID, 2, 1) = 1
+		 	AND T2.USER_ID = #{userId}
+	  ORDER BY T1.SCENE_ID
+	</select>
+	<!-- 英雄关卡 -->
+	<select id="selectHeroCheckpintList" resultType="com.bt.chains.bean.domain.UserFinishedCheckpoint">
+		SELECT T1.SCENE_ID checkpointId,
+			   T1.BIG_STAGE bigStage,
+			   T1.SMALL_STAGE smallStage,
+			   T1.POWER power
+		  FROM HERO_SCENE_CONFIG T1, USER_FINISHED_CHECKPOINT T2
+		 WHERE T1.SCENE_ID = T2.CHECKPOINT_ID 
+		 	AND SUBSTR(CHECKPOINT_ID, 2, 1) = 2
+		 	AND T2.USER_ID = #{userId}
+	  ORDER BY T1.SCENE_ID
+	</select>
+	<!-- 活动关卡 -->
+	<select id="selectActivityCheckpintList" resultType="com.bt.chains.bean.domain.UserFinishedCheckpoint">
+		SELECT T1.SCENE_ID checkpointId,
+			   T1.BIG_STAGE bigStage,
+			   T1.SMALL_STAGE smallStage,
+			   T1.POWER power
+		  FROM ACTIVITY_SCENE_CONFIG T1, USER_FINISHED_CHECKPOINT T2 
+		 WHERE T1.SCENE_ID = T2.CHECKPOINT_ID
+		  	AND SUBSTR(CHECKPOINT_ID, 2, 1) = 3
+		  	AND T2.USER_ID = #{userId}
+	  ORDER BY T1.SCENE_ID
+	</select>
+</mapper>

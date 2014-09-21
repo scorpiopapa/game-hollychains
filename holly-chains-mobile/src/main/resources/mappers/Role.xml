@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bt.chains.mapper.RoleMapper">
+	<insert id="insertUserRole" parameterType="com.bt.chains.bean.domain.UserRole">
+		INSERT INTO USER_ROLE (USER_ID,ROLE_ID,ROLE_RANK) VALUES (#{userId},#{roleId},#{roleRank})
+	</insert>
+	<!-- 更新职业级别 -->
+	<update id="updateUserRole" parameterType="com.bt.chains.bean.domain.UserRole">
+		UPDATE USER_ROLE
+		   SET ROLE_RANK = #{roleRank}
+		   , IN_USE = #{inUse}
+		 WHERE USER_ID = #{userId}
+		   AND ROLE_ID = #{roleId}
+	</update>
+
+	<update id="resetUserRoleInUseStatus">
+		UPDATE USER_ROLE SET IN_USE = #{status} WHERE USER_ID = #{userId}
+	</update>
+		
+	<!-- 查询职业 -->
+	<select id="queryRole" resultType="com.bt.chains.bean.domain.UserRole">
+		SELECT USER_ID userId,
+		       ROLE_ID roleId,
+		       ROLE_RANK roleRank,
+		       IN_USE inUse
+		  FROM USER_ROLE 
+		 WHERE USER_ID = #{userId}
+		<if test="roleId != null">
+		   AND ROLE_ID = #{roleId}
+		</if>
+		<if test="inUse != null">
+		   AND IN_USE = #{inUse}
+		</if>		   
+	</select>
+	
+	<select id="queryAllRole" resultType="com.bt.chains.bean.domain.UserRole">
+		SELECT USER_ID userId,
+		       ROLE_ID roleId,
+		       ROLE_RANK roleRank
+		  FROM USER_ROLE 
+		 WHERE USER_ID = #{userId}
+	</select>
+
+	<select id="selectRoleUpgradeConfig" resultType="com.bt.chains.bean.domain.RoleUpgradeConfig">
+		SELECT 
+			ROLE_ID	roleId
+			, ROLE_RANK	rank
+			, MONEY	money
+			, SPECIAL_MONEY	specialMoney
+		FROM ROLE_UPGRADE_CONFIG
+		WHERE ROLE_ID = #{roleId} AND ROLE_RANK = #{rank}
+	</select>
+	
+	<!-- 查询职业配置信息 -->
+	<select id="queryRoleConfig" resultType="com.bt.chains.bean.domain.RoleConfig">
+		SELECT JOB_ID jobId,
+			   UNLOCK_CHECKPOINTS unlockCheckpoints,
+			   UNLOCK_GOLD unlockGold
+		  FROM ROLE
+		 WHERE JOB_ID = #{roleId}
+	</select>
+	
+	<!-- 查询职业的基础数据 -->
+	<select id="selectRoleBaseData" resultType="com.bt.chains.bean.domain.RoleBaseData">
+		SELECT ROLE_ID roleId,
+		       ROLE_RANK roleRank,
+		       SHIELD shield,
+		       SHIELD_DEFENCE shieldDefence,
+		       HEALTH_PORTION healthPortion,
+		       HEALTH health,
+		       BASIC_DAMAGE basicDamage,
+		       WEAPON_DAMAGE weaponDamage,
+		       LEECH leech,
+		       CRITICAL_DAMAGE criticalDamage,
+		       PIERCE pierce
+		  FROM ROLE_UPGRADE_CONFIG
+		 WHERE ROLE_ID = #{roleId}
+		   AND ROLE_RANK = #{roleRank}
+	</select>
+</mapper>
