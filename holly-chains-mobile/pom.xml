@@ -1,15 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.joinway</groupId>
+  <parent>
+    <groupId>com.joinway</groupId>
+  	<artifactId>holly-chains</artifactId>
+    <version>1.0</version>
+  </parent>
   <artifactId>holly-chains-mobile</artifactId>
-  <version>1.0</version>
   <packaging>war</packaging>
+
   <name>Holly Chains</name>
   <description>Holly Chains Web Service</description>
   
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	<spring.version>4.0.2.RELEASE</spring.version>
+<!--   	<spring.version>4.0.2.RELEASE</spring.version>
   	<slf4j.version>1.7.5</slf4j.version>
   	<logback.version>1.0.13</logback.version>
   	<aspectj.version>1.7.3</aspectj.version>
@@ -22,7 +26,7 @@
   	<reflections.version>0.9.9-RC1</reflections.version>
   	<mybatis.version>3.2.2</mybatis.version>
   	<mybatis.spring.version>1.2.0</mybatis.spring.version>
-  	<httpclient.version>4.3.3</httpclient.version>
+  	<httpclient.version>4.3.3</httpclient.version> -->
   	<!-- <velocity.version>1.7</velocity.version> -->
   </properties>
 
@@ -51,19 +55,13 @@
 		<dependency>
 			<groupId>com.joinway</groupId>
 			<artifactId>appx</artifactId>
-			<version>1.1.2</version>
+			<version>1.1.7-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.joinway</groupId>
 			<artifactId>utils</artifactId>
-			<version>1.1.2</version>
+			<version>1.1.7-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.joinway</groupId>
-			<artifactId>db</artifactId>
-			<version>1.1.2</version>
-		</dependency>
-  
 		<dependency>
 			<groupId>org.jsondoc</groupId>
 			<artifactId>jsondoc-core</artifactId>
