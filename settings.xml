@@ -4,14 +4,6 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
-	<servers>
-		<server>
-	      <id>joinway-server</id>
-	      <username>admin</username>
-	      <password>btdev123.</password>
-		</server>
-	</servers>          
-
   <mirrors>
 <!--   	<mirror>
   		<id>bt-repository</id>
@@ -36,48 +28,39 @@
       <repositories>
       	<repository>
       		<id>joinway-framework-release</id>
-      		<name>btech framework release</name>
+      		<name>joinway framework release</name>
       		<releases>
       			<enabled>true</enabled>
       			<updatePolicy>always</updatePolicy>
       		</releases>
-      		<url>http://115.28.198.131:9000/repository/release</url>
+      		<url>http://115.28.198.131:9000/nexus/content/repositories/releases</url>
       	</repository>
       	<repository>
       		<id>joinway-thirdparty</id>
-      		<name>btech thirdparty</name>
+      		<name>joinway thirdparty</name>
       		<releases>
       			<enabled>true</enabled>
       			<updatePolicy>always</updatePolicy>
       		</releases>
-      		<url>http://115.28.198.131:9000/repository/ThirdParty</url>
+      		<url>http://115.28.198.131:9000/nexus/content/repositories/thirdparty</url>
       	</repository>
 		<repository>
-			<id>sonatype</id>
-			<name>Sonatype</name>
+			<id>central</id>
+			<name>central</name>
 			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
 			</releases>
-			<url>http://repository.sonatype.org/content/groups/public/</url>
+			<url>http://115.28.198.131:9000/nexus/content/repositories/central</url>
 		</repository>
       	<repository>
-      		<id>joinway-repository</id>
-      		<name>bt repository</name>
-      		<releases>
-      			<enabled>true</enabled>
-      			<updatePolicy>always</updatePolicy>
-      		</releases>
-      		<url>http://115.28.198.131:9000/repository/internal/</url>
-      	</repository>
-      	<repository>
       		<id>joinway-framework-snapshots</id>
-      		<name>btech framework snapshots</name>
+      		<name>joinway framework snapshots</name>
       		<snapshots>
       			<enabled>true</enabled>
       			<updatePolicy>always</updatePolicy>
       		</snapshots>
-      		<url>http://115.28.198.131:9000/repository/snapshots</url>
+      		<url>http://115.28.198.131:9000/nexus/content/repositories/snapshots</url>
       	</repository>
       </repositories>
     </profile>

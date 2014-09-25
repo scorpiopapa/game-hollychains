@@ -86,7 +86,7 @@ public class UserController extends ExceptionController{
 	})
 	@RequestMapping(value = "code", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	@Audit
+	@Audit("id")
 	@InputLog
 	@OutputLog
 	public ActiveCode getCode(@ApiParam(name="id", description="用户id", paramType = ApiParamType.QUERY) @RequestParam("id") @Min(1) int id) throws RequestException {

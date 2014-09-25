@@ -2,8 +2,8 @@ package com.bt.chains.bean.domain;
 
 import com.joinway.bean.domain.DomainEntity;
 import com.joinway.bean.domain.annotation.DomainField;
-import com.joinway.bean.domain.converter.IntToStringConverter;
-import com.joinway.bean.domain.converter.StringToIntConverter;
+//import com.joinway.bean.domain.converter.IntToStringConverter;
+//import com.joinway.bean.domain.converter.StringToIntConverter;
 
 public class Weapon extends DomainEntity {
 	/**
@@ -22,10 +22,10 @@ public class Weapon extends DomainEntity {
 	/**
 	 * 武器名称
 	 */
-	@DomainField(converter=IntToStringConverter.class)
+//	@DomainField(converter=IntToStringConverter.class)
 	private String wid;
 	
-	@DomainField(converter=StringToIntConverter.class)
+//	@DomainField(converter=StringToIntConverter.class)
 	int weaponRare;
 	
 	/**
@@ -301,7 +301,7 @@ public class Weapon extends DomainEntity {
 	}
 
 	@Override
-	public String getIdName() {
+	public String getIdColumnName() {
 		return "WEAPON_ID";
 	}
 

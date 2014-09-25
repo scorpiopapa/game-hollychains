@@ -47,7 +47,7 @@ public class WeaponConfigView extends DomainEntity {
 		return "GASHA_CONFIG";
 	}
 	@Override
-	public String getIdName() {
+	public String getIdColumnName() {
 		return "WEAPON_ID";
 	}
 }

@@ -51,7 +51,7 @@
 	<logger name="com.bt.chains.mapper" level="debug" additivity="false">
 		<appender-ref ref="SQL"/>
 	</logger>
-	<logger name="com.joinway.db.mapper" level="debug" additivity="false">
+	<logger name="com.joinway.appx.mapper" level="debug" additivity="false">
 		<appender-ref ref="SQL"/>
 	</logger>
 		</then>
