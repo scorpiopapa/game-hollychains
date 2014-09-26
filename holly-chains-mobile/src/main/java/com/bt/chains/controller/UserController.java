@@ -43,6 +43,7 @@ import com.joinway.bean.logging.annotation.OutputLog;
 import com.joinway.web.audit.ExceptionController;
 import com.joinway.web.audit.annotation.Audit;
 import com.joinway.web.security.annotation.Login;
+import com.joinway.web.security.annotation.SingleSignOn;
 
 @Api(name = "User API", description = "获取和更新用户信息")
 @Controller
@@ -89,6 +90,7 @@ public class UserController extends ExceptionController{
 	@Audit("id")
 	@InputLog
 	@OutputLog
+	@SingleSignOn("id")
 	public ActiveCode getCode(@ApiParam(name="id", description="用户id", paramType = ApiParamType.QUERY) @RequestParam("id") @Min(1) int id) throws RequestException {
 		return service.getCode(id);
 	}
@@ -106,6 +108,7 @@ public class UserController extends ExceptionController{
 	@Audit
 	@InputLog
 	@OutputLog
+	@SingleSignOn
 	public BindResult bind(@ApiBodyObject @Valid @RequestBody BindForm form) throws RequestException{
 		return service.bindDevice(form);
 	}
@@ -117,6 +120,7 @@ public class UserController extends ExceptionController{
 	@Audit
 	@InputLog
 	@OutputLog
+	@SingleSignOn
 	public UserView updateUserName(@ApiBodyObject @Valid @RequestBody UpdateUserNameForm form){
 		return service.updateUserName(form);
 	}
@@ -128,6 +132,7 @@ public class UserController extends ExceptionController{
 	@Audit
 	@InputLog
 	@OutputLog
+	@SingleSignOn
 	public BaseDataView queryBaseData(@ApiParam(name="userId", description="用户id", paramType = ApiParamType.QUERY) @RequestParam("userId") @Min(1) int userId){
 		return service.queryBaseData(userId);
 	}

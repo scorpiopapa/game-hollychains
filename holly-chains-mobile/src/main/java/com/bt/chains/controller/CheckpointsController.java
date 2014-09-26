@@ -43,11 +43,13 @@ import com.joinway.bean.logging.annotation.LogIgnore;
 import com.joinway.bean.logging.annotation.OutputLog;
 import com.joinway.web.audit.ExceptionController;
 import com.joinway.web.audit.annotation.Audit;
+import com.joinway.web.security.annotation.SingleSignOn;
 
 @Api(name = "Checkpoints API", description = "获取关卡信息")
 @Controller
 @RequestMapping("checkpoints")
 @Validated
+@SingleSignOn
 public class CheckpointsController extends ExceptionController {
 	private final static Logger log = LoggerFactory.getLogger(CheckpointsController.class);
 

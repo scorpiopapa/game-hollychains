@@ -37,11 +37,13 @@ import com.joinway.bean.logging.annotation.InputLog;
 import com.joinway.bean.logging.annotation.OutputLog;
 import com.joinway.web.audit.ExceptionController;
 import com.joinway.web.audit.annotation.Audit;
+import com.joinway.web.security.annotation.SingleSignOn;
 
 @Api(name = "Role API", description = "职业操作")
 @Controller
 @RequestMapping("role")
 @Validated
+@SingleSignOn
 public class RoleController extends ExceptionController{
 	private final static Logger log = LoggerFactory.getLogger(RoleController.class);
 	

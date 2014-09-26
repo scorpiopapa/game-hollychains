@@ -38,11 +38,13 @@ import com.joinway.bean.logging.annotation.InputLog;
 import com.joinway.bean.logging.annotation.OutputLog;
 import com.joinway.web.audit.ExceptionController;
 import com.joinway.web.audit.annotation.Audit;
+import com.joinway.web.security.annotation.SingleSignOn;
 
 @Api(name = "Prop API", description = "道具购买")
 @Controller
 @RequestMapping("prop")
 @Validated
+@SingleSignOn
 public class PropBuyController extends ExceptionController{
 	
 	private final static Logger log = LoggerFactory.getLogger(PropBuyController.class);

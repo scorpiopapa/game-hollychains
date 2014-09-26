@@ -37,10 +37,10 @@
 			<aop:around pointcut-ref="logger" method="doAround"/>
 		</aop:aspect>
 
-<!-- 		<aop:aspect ref="securityAspect">
+		<aop:aspect ref="securityAspect">
 			<aop:pointcut expression="execution(* com.bt.chains.controller.*.*(..))" id="security"/>
 			<aop:around pointcut-ref="security" method="doAround"/>
-		</aop:aspect> -->
+		</aop:aspect>
 
 		<aop:aspect ref="auditAspect">
 			<aop:pointcut expression="execution(* com.bt.chains.controller.*.*(..))" id="audit"/>
@@ -57,16 +57,16 @@
 			</list>
 		</property>
 	</bean>
-<!-- 	<bean id="securityAspect" class="com.joinway.web.security.SecurityInterceptor">
+	<bean id="securityAspect" class="com.joinway.web.security.SecurityInterceptor">
 		<property name="validators">
 			<list>
-				单点登录解开以下注释
+				<!-- 单点登录解开以下注释 -->
 				<bean class="com.joinway.web.security.validator.SingleSignOnValidator"/>
-				Request Header 验证解开以下注视
-				<bean class="com.joinway.web.security.validator.RequestHeaderValidator"/>
+				<!-- Request Header 验证解开以下注视 -->
+				<!-- <bean class="com.joinway.web.security.validator.RequestHeaderValidator"/> -->
 			</list>
 		</property>
-	</bean> -->
+	</bean>
 	<!--  -->
 	
 	<mvc:annotation-driven>

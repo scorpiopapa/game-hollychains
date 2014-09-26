@@ -28,12 +28,14 @@ import com.joinway.bean.logging.annotation.InputLog;
 import com.joinway.bean.logging.annotation.OutputLog;
 import com.joinway.web.audit.ExceptionController;
 import com.joinway.web.audit.annotation.Audit;
+import com.joinway.web.security.annotation.SingleSignOn;
 
 
 @Api(name = "Gasha API", description = "扭蛋操作")
 @Controller
 @RequestMapping("gasha")
 @Validated
+@SingleSignOn
 public class GashaController extends ExceptionController {
 	private final static Logger log = LoggerFactory.getLogger(GashaController.class);
 	

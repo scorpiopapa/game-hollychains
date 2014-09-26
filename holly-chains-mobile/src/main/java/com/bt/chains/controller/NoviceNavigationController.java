@@ -30,11 +30,13 @@ import com.joinway.bean.logging.annotation.InputLog;
 import com.joinway.bean.logging.annotation.OutputLog;
 import com.joinway.web.audit.ExceptionController;
 import com.joinway.web.audit.annotation.Audit;
+import com.joinway.web.security.annotation.SingleSignOn;
 
 @Api(name = "NoviceNavigation API", description = "获取当前导航信息")
 @Controller
 @RequestMapping("navigation")
 @Validated
+@SingleSignOn
 public class NoviceNavigationController extends ExceptionController {
 	private final static Logger log = LoggerFactory.getLogger(NoviceNavigationController.class);
 	

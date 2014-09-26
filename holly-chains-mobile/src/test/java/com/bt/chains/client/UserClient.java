@@ -45,9 +45,9 @@ public class UserClient {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		login();
+//		login();
 //		composeWeapon();
-//		finishedCheckPoint();
+		finishedCheckPoint();
 //		enterCustomCheckpoint();
 //		enterRandomCheckpoint();
 //		bindDevice();
@@ -93,9 +93,9 @@ public class UserClient {
 
 	static void finishedCheckPoint() throws Exception {
 		CheckpointsForm form = new CheckpointsForm();
-		form.setSceneId(1006);
-		form.setUserId(410);
-		form.setMoney(30);
+		form.setSceneId(1001);
+		form.setUserId(1843);
+		form.setMoney(3);
 		
 		postRequest(form, "chains/checkpoints/finishCheckpoint");
 	}

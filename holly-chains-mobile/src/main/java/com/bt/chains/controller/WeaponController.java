@@ -38,11 +38,13 @@ import com.joinway.bean.logging.annotation.InputLog;
 import com.joinway.bean.logging.annotation.OutputLog;
 import com.joinway.web.audit.ExceptionController;
 import com.joinway.web.audit.annotation.Audit;
+import com.joinway.web.security.annotation.SingleSignOn;
 
 @Api(name = "Weapon API", description = "武器操作")
 @Controller
 @RequestMapping("weapon")
 @Validated
+@SingleSignOn
 public class WeaponController extends ExceptionController{
 	private final static Logger log = LoggerFactory.getLogger(WeaponController.class);
 	

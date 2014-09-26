@@ -27,11 +27,13 @@ import com.joinway.bean.logging.annotation.InputLog;
 import com.joinway.bean.logging.annotation.OutputLog;
 import com.joinway.web.audit.ExceptionController;
 import com.joinway.web.audit.annotation.Audit;
+import com.joinway.web.security.annotation.SingleSignOn;
 
 @Api(name = "Score API", description = "保存用户积分信息，并判断是否有新的奖励")
 @Controller
 @RequestMapping("score")
 @Validated
+@SingleSignOn
 public class UserScoreController  extends ExceptionController {
 
 	@Autowired
