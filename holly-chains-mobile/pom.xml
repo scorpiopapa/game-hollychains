@@ -55,12 +55,12 @@
 		<dependency>
 			<groupId>com.joinway</groupId>
 			<artifactId>appx</artifactId>
-			<version>1.1.7-SNAPSHOT</version>
+			<version>1.1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.joinway</groupId>
 			<artifactId>utils</artifactId>
-			<version>1.1.7-SNAPSHOT</version>
+			<version>1.1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsondoc</groupId>
