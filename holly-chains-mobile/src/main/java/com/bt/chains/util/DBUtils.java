@@ -9,7 +9,8 @@ public final class DBUtils {
 	private final static Calendar calc = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
 	
 	public static Date getCurrentTimestamp(){
-		return calc.getTime();
+//		return calc.getTime();
+		return Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai")).getTime();
 	}
 	
 //	public static int getIntValue()
