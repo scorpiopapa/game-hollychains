@@ -1,5 +1,6 @@
 package com.bt.chains.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,13 @@ public class HollyChainsAuditService extends AuditService {
 		String loginName = null;
 		
 		try{
-			userId = Integer.valueOf(uid);
-			User user = mapper.selectUser(userId);
-			if(user != null){
-				loginName = user.getMarketId();
+			if(StringUtils.isNotBlank(uid)){
+				userId = Integer.valueOf(uid);
+				User user = mapper.selectUser(userId);
+				
+				if(user != null){
+					loginName = user.getMarketId();
+				}
 			}
 		}catch(Exception e){
 			log.warn("find user id failed", e.getMessage());
