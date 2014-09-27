@@ -6,7 +6,7 @@ import java.util.TimeZone;
 
 public final class DBUtils {
 
-	private final static Calendar calc = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
+//	private final static Calendar calc = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"));
 	
 	public static Date getCurrentTimestamp(){
 //		return calc.getTime();
