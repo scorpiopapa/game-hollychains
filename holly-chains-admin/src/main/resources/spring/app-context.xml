@@ -47,12 +47,12 @@
 	 -->
 	<aop:config>
 		<aop:aspect ref="logAspect">
-			<aop:pointcut expression="execution(* com.joinway.admin.*..*(..))" id="adminLogger"/>
+			<aop:pointcut expression="execution(* com.joinway.admin..*(..))" id="adminLogger"/>
 			<aop:around pointcut-ref="adminLogger" method="doAround"/>
 		</aop:aspect>
 
 		<aop:aspect ref="logAspect">
-			<aop:pointcut expression="execution(* com.joinway.appx.*..*(..))" id="appxLogger"/>
+			<aop:pointcut expression="execution(* com.joinway.appx..*(..))" id="appxLogger"/>
 			<aop:around pointcut-ref="appxLogger" method="doAround"/>
 		</aop:aspect>
 
