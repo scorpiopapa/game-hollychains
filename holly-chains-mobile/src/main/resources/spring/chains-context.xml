@@ -37,10 +37,10 @@
 			<aop:around pointcut-ref="logger" method="doAround"/>
 		</aop:aspect>
 
-		<aop:aspect ref="securityAspect">
+<!-- 		<aop:aspect ref="securityAspect">
 			<aop:pointcut expression="execution(* com.bt.chains.controller.*.*(..))" id="security"/>
 			<aop:around pointcut-ref="security" method="doAround"/>
-		</aop:aspect>
+		</aop:aspect> -->
 
 		<aop:aspect ref="auditAspect">
 			<aop:pointcut expression="execution(* com.bt.chains.controller.*.*(..))" id="audit"/>
@@ -53,7 +53,7 @@
 		<property name="processors">
 			<list>
 				<!-- 在这里添加所有audit的处理 -->
-				<bean class="com.joinway.appx.service.AuditService"/>
+				<bean class="com.bt.chains.service.HollyChainsAuditService"/>
 			</list>
 		</property>
 	</bean>

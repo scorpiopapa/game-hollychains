@@ -632,11 +632,11 @@ public class CheckpointsService {
 					ErrorCodeConstants.ROLE_NO_EXISTS_MSG);
 		}
 		
-		int uPower = u.getPower();
-		if (uPower < power) {
-			throw new RequestException(ErrorCodeConstants.NOT_ENOUGH_POWER,
-					ErrorCodeConstants.NOT_ENOUGH_POWER_MSG);
-		}
+//		int uPower = u.getPower();
+//		if (uPower < power) {
+//			throw new RequestException(ErrorCodeConstants.NOT_ENOUGH_POWER,
+//					ErrorCodeConstants.NOT_ENOUGH_POWER_MSG);
+//		}
 
 		// 查询关卡信息
 		CheckpointsView checkpointsView = queryCheckpoints(sceneId, sceneType);
